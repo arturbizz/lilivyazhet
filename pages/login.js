@@ -14,18 +14,20 @@ export default function Login() {
   const { setUser, setProfile } = useAuth();
 
   useEffect(() => {
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        setUser(session.user);
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single();
-        setProfile(profile);
-        router.push('/');
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (event, session) => {
+        if (session?.user) {
+          setUser(session.user);
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('*')
+            .eq('id', session.user.id)
+            .single();
+          setProfile(profile);
+          router.push('/');
+        }
       }
-    });
+    );
     return () => {
       authListener?.subscription.unsubscribe();
     };
@@ -34,41 +36,41 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSignUp) {
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password: 'temp-password-123',
-        options: { data: { full_name: name, role } }
+        options: { data: { full_name: name, role } },
       });
       if (error) toast.error(error.message);
-      else toast.success('Регистрация! Проверьте почту (или подтвердите в Supabase).');
+      else toast.success('Регистрация! Проверьте почту.');
     } else {
-      const { data, error } = await supabase.auth.signInWithOtp({ email });
+      const { error } = await supabase.auth.signInWithOtp({ email });
       if (error) toast.error(error.message);
-      else toast.success('Ссылка для входа отправлена на почту!');
+      else toast.success('Ссылка отправлена на почту!');
     }
   };
 
   return (
     <Layout>
-      <div className="max-w-md mx-auto mt-12 bg-white p-8 rounded-3xl shadow-xl">
-        <h1 className="text-2xl font-bold text-soft-rose mb-4">
+      <div className="max-w-md mx-auto mt-16 bg-white p-10 rounded-3xl shadow-xl">
+        <h1 className="text-3xl font-bold text-soft-rose mb-6 text-center">
           {isSignUp ? 'Регистрация' : 'Вход'}
         </h1>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {isSignUp && (
             <>
               <input
                 type="text"
                 placeholder="Ваше имя"
                 value={name}
-                onChange={e => setName(e.target.value)}
-                className="border w-full px-4 py-2 rounded-full"
+                onChange={(e) => setName(e.target.value)}
+                className="border-2 w-full px-4 py-3 rounded-full focus:outline-none focus:border-soft-rose"
                 required
               />
               <select
                 value={role}
-                onChange={e => setRole(e.target.value)}
-                className="border w-full px-4 py-2 rounded-full"
+                onChange={(e) => setRole(e.target.value)}
+                className="border-2 w-full px-4 py-3 rounded-full focus:outline-none focus:border-soft-rose"
               >
                 <option value="customer">Я покупатель</option>
                 <option value="seller">Я мастер</option>
@@ -79,19 +81,21 @@ export default function Login() {
             type="email"
             placeholder="Email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
-            className="border w-full px-4 py-2 rounded-full"
+            onChange={(e) => setEmail(e.target.value)}
+            className="border-2 w-full px-4 py-3 rounded-full focus:outline-none focus:border-soft-rose"
             required
           />
-          <button type="submit" className="btn-primary w-full">
+          <button type="submit" className="btn-primary w-full py-3 text-lg">
             {isSignUp ? 'Зарегистрироваться' : 'Получить ссылку на вход'}
           </button>
         </form>
         <button
           onClick={() => setIsSignUp(!isSignUp)}
-          className="text-soft-rose underline mt-4 text-sm"
+          className="text-soft-rose underline mt-6 w-full text-center"
         >
-          {isSignUp ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться'}
+          {isSignUp
+            ? 'Уже есть аккаунт? Войти'
+            : 'Нет аккаунта? Зарегистрироваться'}
         </button>
       </div>
     </Layout>

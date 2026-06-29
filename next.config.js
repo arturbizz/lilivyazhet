@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: 'export',          // <-- вот главное изменение
+  output: 'export',
+  basePath: '/lilivyazhet',
+  trailingSlash: true,
+  images: { unoptimized: true }
 };
 module.exports = nextConfig;

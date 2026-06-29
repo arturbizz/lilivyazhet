@@ -1,18 +1,66 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&family=Cormorant+Garamond:wght@400;600&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Глобальные стили */
 body {
-  @apply font-sans text-soft-chocolate bg-soft-cream;
+  @apply font-sans text-cotton-800 bg-cotton-50 bg-knit-pattern;
+  cursor: default; /* убираем мигающий курсор где не надо */
 }
 
+input, textarea, select {
+  cursor: text; /* курсор ввода только в полях */
+}
+
+a, button, [role="button"], .clickable {
+  cursor: pointer;
+}
+
+/* Кнопка-нить (основная) */
 .btn-primary {
-  @apply bg-soft-rose text-white px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 font-semibold;
+  @apply relative inline-flex items-center justify-center px-8 py-3
+         bg-thread-peach text-cotton-700 font-semibold
+         rounded-full
+         border-2 border-cotton-300
+         shadow-[0_4px_0_0_#B38B5B]
+         active:shadow-none active:translate-y-[4px]
+         transition-all duration-200 ease-out
+         select-none;
+  /* Имитация нитяной строчки */
+  outline: 2px dashed theme('colors.cotton.200');
+  outline-offset: 3px;
 }
+.btn-primary:hover {
+  @apply bg-thread-rose border-cotton-400;
+}
+
+/* Вторичная кнопка (пустая) */
 .btn-secondary {
-  @apply border-2 border-soft-rose text-soft-rose px-6 py-3 rounded-full hover:bg-soft-rose hover:text-white transition-all duration-300;
+  @apply relative inline-flex items-center justify-center px-8 py-3
+         bg-transparent text-cotton-600 font-medium
+         rounded-full
+         border-2 border-cotton-400
+         shadow-[0_3px_0_0_#C7A87B]
+         active:shadow-none active:translate-y-[3px]
+         transition-all duration-200 ease-out
+         select-none;
+  outline: 2px dotted theme('colors.cotton.300');
+  outline-offset: 2px;
 }
+.btn-secondary:hover {
+  @apply bg-cotton-100 border-cotton-500 text-cotton-700;
+}
+
+/* Карточка товара */
 .card {
-  @apply bg-white rounded-3xl shadow-md hover:shadow-xl transition-all duration-300 p-4;
+  @apply bg-white rounded-3xl shadow-md hover:shadow-xl 
+         transition-all duration-300 p-6
+         border border-cotton-100;
+}
+
+/* Убираем стандартные эмодзи-иконки – заменим на SVG */
+.icon-yarn {
+  display: inline-block;
+  vertical-align: middle;
 }

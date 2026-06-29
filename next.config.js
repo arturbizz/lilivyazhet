@@ -1,8 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  images: {
-    domains: ['ваш-проект.supabase.co'], // замените на ваш supabase URL
-  },
+  output: 'export',          // <-- вот главное изменение
 };
 module.exports = nextConfig;

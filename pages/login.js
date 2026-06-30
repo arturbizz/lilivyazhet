@@ -9,12 +9,12 @@ export default function Login() {
   const [isSignUp, setIsSignUp] = useState(false);
   const [name, setName] = useState('');
   const [role, setRole] = useState('customer');
+  const [justRegistered, setJustRegistered] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSignUp) {
-      // Регистрация
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: { data: { full_name: name, role } },
@@ -23,20 +23,10 @@ export default function Login() {
         toast.error(error.message);
         return;
       }
-      // После регистрации автоматически входим
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
-      if (signInError) {
-        toast.error('Аккаунт создан, но войти не удалось. Попробуйте вручную.');
-        setIsSignUp(false);
-      } else {
-        toast.success('Добро пожаловать!');
-        // Редирект произойдёт автоматически через onAuthStateChange в _app.js
-      }
+      toast.success('Аккаунт создан! Теперь войдите.');
+      setJustRegistered(true);
+      setIsSignUp(false);
     } else {
-      // Вход
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
@@ -55,6 +45,11 @@ export default function Login() {
         <h1 className="text-3xl font-heading font-bold text-gray-900 mb-8 text-center">
           {isSignUp ? 'Регистрация' : 'Вход'}
         </h1>
+        {justRegistered && (
+          <div className="mb-6 p-4 bg-aurora-green/10 rounded-2xl text-aurora-green text-sm">
+            Аккаунт создан! Введите пароль, который вы указали при регистрации, и нажмите «Войти».
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-5">
           {isSignUp && (
             <>
@@ -98,7 +93,10 @@ export default function Login() {
           </button>
         </form>
         <button
-          onClick={() => setIsSignUp(!isSignUp)}
+          onClick={() => {
+            setIsSignUp(!isSignUp);
+            setJustRegistered(false);
+          }}
           className="text-aurora-green hover:underline mt-6 w-full text-center text-sm"
         >
           {isSignUp ? 'Уже есть аккаунт? Войти' : 'Нет аккаунта? Зарегистрироваться'}

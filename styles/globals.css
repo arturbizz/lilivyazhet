@@ -3,88 +3,70 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Базовые стили — чистые, без лишних украшений */
 body {
   @apply font-sans text-gray-900 bg-surface-50;
   cursor: default;
 }
 
-input, textarea, select {
+/* Текстовый курсор только в полях ввода */
+input, textarea, [contenteditable="true"] {
   cursor: text;
 }
 
-a, button, [role="button"], .clickable {
+a, button, [role="button"], select, .clickable, label {
   cursor: pointer;
 }
 
-/* Кнопка-главная (голографическая подсветка) */
+/* Основная кнопка – прозрачная, с тонкой рамкой и градиентной подсветкой при наведении */
 .btn-primary {
   @apply relative inline-flex items-center justify-center px-6 py-3
-         bg-aurora-green text-white font-semibold rounded-full
-         shadow-[0_4px_12px_rgba(0,229,160,0.3)]
+         bg-transparent text-gray-800 font-medium rounded-full
+         border border-gray-200
          transition-all duration-300 ease-out
          select-none;
-  border: 1px solid rgba(0, 229, 160, 0.5);
   background-clip: padding-box;
-  position: relative;
 }
 .btn-primary::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 9999px;
-  padding: 2px;
-  background: linear-gradient(135deg, #00E5A0, #00C2FF, #7B61FF, #00E5A0);
-  background-size: 300% 300%;
-  animation: aurora-rotate 4s ease infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-.btn-primary:hover {
-  @apply shadow-[0_6px_20px_rgba(0,229,160,0.5)] -translate-y-0.5;
-}
-.btn-primary:active {
-  @apply shadow-[0_2px_6px_rgba(0,229,160,0.3)] translate-y-0.5;
-}
-
-@keyframes aurora-rotate {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Вторичная кнопка (прозрачная с голографической каймой) */
-.btn-secondary {
-  @apply relative inline-flex items-center justify-center px-6 py-3
-         bg-transparent text-gray-700 font-medium rounded-full
-         transition-all duration-300 ease-out
-         select-none;
-  border: 1px solid #E9ECEF;
-}
-.btn-secondary::before {
   content: '';
   position: absolute;
   inset: -1px;
   border-radius: 9999px;
   padding: 1px;
-  background: linear-gradient(135deg, rgba(0,229,160,0.4), rgba(0,194,255,0.4));
+  background: linear-gradient(135deg, #00E5A0, #00C2FF, #7B61FF);
+  background-size: 200% 200%;
+  animation: aurora-rotate 6s ease infinite;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s ease;
 }
-.btn-secondary:hover {
-  @apply bg-gray-50 border-gray-300;
-}
-.btn-secondary:hover::before {
+.btn-primary:hover::before {
   opacity: 1;
 }
+.btn-primary:hover {
+  @apply border-gray-300;
+  box-shadow: 0 4px 15px rgba(0, 229, 160, 0.2);
+}
+.btn-primary:active {
+  @apply bg-gray-50;
+}
 
-/* Карточка товара — лёгкая, воздушная, с голографическим свечением при наведении */
+/* Вторичная кнопка – совсем лёгкая */
+.btn-secondary {
+  @apply relative inline-flex items-center justify-center px-6 py-3
+         bg-transparent text-gray-600 font-medium rounded-full
+         border border-gray-200
+         transition-all duration-300 ease-out
+         select-none;
+}
+.btn-secondary:hover {
+  @apply border-gray-300 bg-gray-50 text-gray-800;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+}
+
+/* Карточка товара – тонкая рамка, свечение при наведении */
 .card {
   @apply bg-white rounded-2xl shadow-sm hover:shadow-md
          transition-all duration-300 p-5
@@ -94,9 +76,9 @@ a, button, [role="button"], .clickable {
 .card::after {
   content: '';
   position: absolute;
-  inset: -2px;
+  inset: -1px;
   border-radius: 18px;
-  padding: 2px;
+  padding: 1px;
   background: linear-gradient(135deg, #00E5A0, #00C2FF, #7B61FF);
   background-size: 200% 200%;
   animation: aurora-rotate 6s ease infinite;
@@ -109,4 +91,10 @@ a, button, [role="button"], .clickable {
 }
 .card:hover::after {
   opacity: 1;
+}
+
+@keyframes aurora-rotate {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }

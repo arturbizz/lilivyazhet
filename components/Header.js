@@ -11,59 +11,43 @@ const AnimatedLogo = () => (
     xmlns="http://www.w3.org/2000/svg"
     className="drop-shadow-md"
   >
-    {/* Горизонтальные спицы */}
+    {/* Группа: спицы + петли (появляются, потом исчезают) */}
     <g>
+      <animate attributeName="opacity" from="1" to="0" dur="1s" begin="3s" fill="freeze" />
       {/* Верхняя спица */}
-      <line x1="10" y1="45" x2="110" y2="45" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round">
-        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0s" fill="freeze" />
-      </line>
-      <circle cx="10" cy="45" r="4" fill="#DCC7A3">
-        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0s" fill="freeze" />
-      </circle>
-      <circle cx="110" cy="45" r="4" fill="#DCC7A3">
-        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0.2s" fill="freeze" />
-      </circle>
-
+      <line x1="10" y1="45" x2="110" y2="45" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="10" cy="45" r="4" fill="#DCC7A3" />
+      <circle cx="110" cy="45" r="4" fill="#DCC7A3" />
       {/* Нижняя спица */}
-      <line x1="10" y1="75" x2="110" y2="75" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round">
-        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0.4s" fill="freeze" />
-      </line>
-      <circle cx="10" cy="75" r="4" fill="#DCC7A3">
-        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0.4s" fill="freeze" />
-      </circle>
-      <circle cx="110" cy="75" r="4" fill="#DCC7A3">
-        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0.6s" fill="freeze" />
-      </circle>
+      <line x1="10" y1="75" x2="110" y2="75" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="10" cy="75" r="4" fill="#DCC7A3" />
+      <circle cx="110" cy="75" r="4" fill="#DCC7A3" />
+      {/* Петли (5 штук) */}
+      {[0, 1, 2, 3, 4].map((i) => (
+        <path
+          key={i}
+          d={`M${20 + i * 20},45 Q${30 + i * 20},60 ${20 + i * 20},75`}
+          stroke="#00E5A0"
+          strokeWidth="2"
+          fill="none"
+          strokeDasharray="30"
+          strokeDashoffset="30"
+          strokeLinecap="round"
+        >
+          <animate
+            attributeName="stroke-dashoffset"
+            from="30" to="0"
+            dur="0.5s"
+            begin={`${0.8 + i * 0.3}s`}
+            fill="freeze"
+          />
+        </path>
+      ))}
     </g>
-
-    {/* Вязание: петли между спицами (имитация процесса) */}
-    {[0, 1, 2, 3, 4].map((i) => (
-      <path
-        key={i}
-        d={`M${20 + i * 20},45 Q${30 + i * 20},60 ${20 + i * 20},75`}
-        stroke="#00E5A0"
-        strokeWidth="2"
-        fill="none"
-        strokeDasharray="30"
-        strokeDashoffset="30"
-        strokeLinecap="round"
-      >
-        <animate
-          attributeName="stroke-dashoffset"
-          from="30" to="0"
-          dur="0.5s"
-          begin={`${1.2 + i * 0.3}s`}
-          fill="freeze"
-        />
-      </path>
-    ))}
-
-    {/* Исчезновение спиц и петель */}
-    <animate attributeName="opacity" from="1" to="0" dur="1s" begin="3s" fill="freeze" />
 
     {/* Мишка (появляется после исчезновения спиц) */}
     <g opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="1s" begin="4s" fill="freeze" />
+      <animate attributeName="opacity" from="0" to="1" dur="1s" begin="3.5s" fill="freeze" />
       {/* Уши */}
       <circle cx="42" cy="32" r="8" fill="#DCC7A3" />
       <circle cx="78" cy="32" r="8" fill="#DCC7A3" />
@@ -102,8 +86,12 @@ export default function Header() {
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3">
         <Link href="/" className="flex items-center gap-3 group">
           <AnimatedLogo />
-          <span className="text-xl font-heading font-bold bg-gradient-to-r from-aurora-green to-aurora-purple bg-clip-text text-transparent">
-            ЛилиВяжет
+          <span className="text-xl font-heading font-bold whitespace-nowrap">
+            <span className="font-light text-[#7E5C3A]">Лили</span>
+            <span className="mx-1 text-aurora-green align-middle">❄</span>
+            <span className="bg-gradient-to-r from-aurora-green via-aurora-blue to-aurora-purple bg-clip-text text-transparent">
+              Вяжет
+            </span>
           </span>
         </Link>
 

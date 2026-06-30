@@ -3,11 +3,12 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+html, body {
   @apply font-sans text-gray-900;
   cursor: default;
   background: linear-gradient(180deg, #F9FAFC 0%, #F2F5F9 100%);
   min-height: 100vh;
+  overflow-x: hidden; /* убирает сдвиг вправо */
 }
 
 input, textarea, [contenteditable="true"] {

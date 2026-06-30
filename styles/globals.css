@@ -4,11 +4,12 @@
 @tailwind utilities;
 
 body {
-  @apply font-sans text-gray-900 bg-surface-50;
+  @apply font-sans text-gray-900;
   cursor: default;
+  background: linear-gradient(180deg, #F9FAFC 0%, #F2F5F9 100%);
+  min-height: 100vh;
 }
 
-/* Текстовый курсор только в полях ввода */
 input, textarea, [contenteditable="true"] {
   cursor: text;
 }
@@ -17,13 +18,14 @@ a, button, [role="button"], select, .clickable, label {
   cursor: pointer;
 }
 
-/* Основная кнопка – прозрачная, с тонкой рамкой и градиентной подсветкой при наведении */
+/* Основная кнопка с постоянным легким сиянием */
 .btn-primary {
   @apply relative inline-flex items-center justify-center px-6 py-3
-         bg-transparent text-gray-800 font-medium rounded-full
+         bg-white text-gray-800 font-medium rounded-full
          border border-gray-200
          transition-all duration-300 ease-out
          select-none;
+  box-shadow: 0 0 8px rgba(0, 229, 160, 0.15);
   background-clip: padding-box;
 }
 .btn-primary::before {
@@ -32,41 +34,41 @@ a, button, [role="button"], select, .clickable, label {
   inset: -1px;
   border-radius: 9999px;
   padding: 1px;
-  background: linear-gradient(135deg, #00E5A0, #00C2FF, #7B61FF);
-  background-size: 200% 200%;
+  background: linear-gradient(135deg, #00E5A0, #00C2FF, #7B61FF, #00E5A0);
+  background-size: 300% 300%;
   animation: aurora-rotate 6s ease infinite;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
-  opacity: 0;
+  opacity: 0.6;
   transition: opacity 0.3s ease;
-}
-.btn-primary:hover::before {
-  opacity: 1;
 }
 .btn-primary:hover {
   @apply border-gray-300;
-  box-shadow: 0 4px 15px rgba(0, 229, 160, 0.2);
+  box-shadow: 0 0 20px rgba(0, 229, 160, 0.35);
+}
+.btn-primary:hover::before {
+  opacity: 1;
 }
 .btn-primary:active {
   @apply bg-gray-50;
 }
 
-/* Вторичная кнопка – совсем лёгкая */
+/* Вторичная кнопка */
 .btn-secondary {
   @apply relative inline-flex items-center justify-center px-6 py-3
-         bg-transparent text-gray-600 font-medium rounded-full
+         bg-white text-gray-600 font-medium rounded-full
          border border-gray-200
          transition-all duration-300 ease-out
          select-none;
 }
 .btn-secondary:hover {
-  @apply border-gray-300 bg-gray-50 text-gray-800;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  @apply border-gray-300 text-gray-800;
+  box-shadow: 0 0 12px rgba(0, 194, 255, 0.15);
 }
 
-/* Карточка товара – тонкая рамка, свечение при наведении */
+/* Карточка товара */
 .card {
   @apply bg-white rounded-2xl shadow-sm hover:shadow-md
          transition-all duration-300 p-5
@@ -97,4 +99,11 @@ a, button, [role="button"], select, .clickable, label {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
+}
+
+/* Тонкие акцентные линии */
+.accent-line {
+  @apply h-px flex-1;
+  background: linear-gradient(90deg, transparent, #00C2FF, #7B61FF, #00E5A0, transparent);
+  opacity: 0.3;
 }

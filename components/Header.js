@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useState } from 'react';
 import { useAuth, useCart } from '../lib/store';
 
 const AuroraLogo = () => (
@@ -18,18 +19,36 @@ export default function Header() {
   const { user, logout } = useAuth();
   const items = useCart(s => s.items);
   const totalItems = items.reduce((sum, i) => sum + i.qty, 0);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
-        <Link href="/" className="flex items-center gap-3 group">
+    <header className="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3">
+        {/* Логотип */}
+        <Link href="/" className="flex items-center gap-2 z-10">
           <AuroraLogo />
-          <span className="text-2xl font-heading font-bold bg-gradient-to-r from-aurora-green to-aurora-purple bg-clip-text text-transparent">
+          <span className="text-xl font-heading font-bold bg-gradient-to-r from-aurora-green to-aurora-purple bg-clip-text text-transparent">
             ЛилиВяжет
           </span>
         </Link>
 
-        <nav className="flex items-center gap-8">
+        {/* Гамбургер-кнопка (только на мобильных) */}
+        <button
+          className="md:hidden p-2 text-gray-600 hover:text-gray-900 z-20"
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Меню"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            {menuOpen ? (
+              <path d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
+
+        {/* Навигация (десктоп) */}
+        <nav className="hidden md:flex items-center gap-6">
           <Link href="/catalog" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
             Готовые авторские работы
           </Link>
@@ -47,7 +66,6 @@ export default function Header() {
               </span>
             )}
           </Link>
-
           {user ? (
             <>
               <Link href={user.role === 'seller' ? '/dashboard/seller' : '/dashboard/customer'} className="text-gray-600 hover:text-gray-900 font-medium">
@@ -64,6 +82,44 @@ export default function Header() {
           )}
         </nav>
       </div>
+
+      {/* Мобильное меню (выпадашка) */}
+      {menuOpen && (
+        <div className="md:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-4">
+          <Link href="/catalog" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>
+            Готовые авторские работы
+          </Link>
+          <Link href="/gift-ideas" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>
+            Идеи для подарка
+          </Link>
+          <Link href="/masterclasses" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>
+            Мастер‑классы
+          </Link>
+          <Link href="/cart" className="flex items-center gap-2 text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>
+            Корзина
+            {totalItems > 0 && (
+              <span className="bg-aurora-green text-white w-5 h-5 flex items-center justify-center rounded-full text-xs font-bold">
+                {totalItems}
+              </span>
+            )}
+          </Link>
+          <hr className="border-gray-100" />
+          {user ? (
+            <>
+              <Link href={user.role === 'seller' ? '/dashboard/seller' : '/dashboard/customer'} className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>
+                Кабинет
+              </Link>
+              <button onClick={() => { logout(); setMenuOpen(false); }} className="btn-secondary w-full text-center py-2">
+                Выйти
+              </button>
+            </>
+          ) : (
+            <Link href="/login" className="btn-primary w-full text-center block py-2" onClick={() => setMenuOpen(false)}>
+              Войти
+            </Link>
+          )}
+        </div>
+      )}
     </header>
   );
 }

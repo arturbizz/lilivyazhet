@@ -14,6 +14,7 @@ export default function Login() {
   const router = useRouter();
   const { setUser, setProfile } = useAuth();
 
+  // Слушаем изменения авторизации
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(
       async (event, session) => {
@@ -37,18 +38,30 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSignUp) {
-      const { error } = await supabase.auth.signUp({
+      // Регистрация
+      const { error: signUpError } = await supabase.auth.signUp({
         email,
         password,
         options: { data: { full_name: name, role } },
       });
-      if (error) toast.error(error.message);
-      else {
-        toast.success('Аккаунт создан! Теперь войдите.');
+      if (signUpError) {
+        toast.error(signUpError.message);
+        return;
+      }
+      // Автоматический вход сразу после регистрации
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (signInError) {
+        toast.error('Регистрация прошла, но не удалось войти. Попробуйте войти вручную.');
         setIsSignUp(false);
-        setPassword('');
+      } else {
+        toast.success('Добро пожаловать!');
+        // Редирект произойдёт в onAuthStateChange
       }
     } else {
+      // Вход
       const { error } = await supabase.auth.signInWithPassword({
         email,
         password,

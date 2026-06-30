@@ -7,6 +7,7 @@ import { useAuth } from '../lib/store';
 
 export default function Login() {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [name, setName] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const [role, setRole] = useState('customer');
@@ -38,22 +39,29 @@ export default function Login() {
     if (isSignUp) {
       const { error } = await supabase.auth.signUp({
         email,
-        password: 'temp-password-123',
+        password,
         options: { data: { full_name: name, role } },
       });
       if (error) toast.error(error.message);
-      else toast.success('Регистрация! Проверьте почту.');
+      else {
+        toast.success('Аккаунт создан! Теперь войдите.');
+        setIsSignUp(false);
+        setPassword('');
+      }
     } else {
-      const { error } = await supabase.auth.signInWithOtp({ email });
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       if (error) toast.error(error.message);
-      else toast.success('Ссылка отправлена на почту!');
+      else toast.success('Добро пожаловать!');
     }
   };
 
   return (
     <Layout>
-      <div className="max-w-md mx-auto mt-16 bg-white p-10 rounded-3xl shadow-xl">
-        <h1 className="text-3xl font-bold text-soft-rose mb-6 text-center">
+      <div className="max-w-md mx-auto mt-16 bg-white p-10 rounded-3xl shadow-sm border border-gray-100">
+        <h1 className="text-3xl font-heading font-bold text-gray-900 mb-8 text-center">
           {isSignUp ? 'Регистрация' : 'Вход'}
         </h1>
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -64,13 +72,13 @@ export default function Login() {
                 placeholder="Ваше имя"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="border-2 w-full px-4 py-3 rounded-full focus:outline-none focus:border-soft-rose"
+                className="w-full px-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:border-aurora-green"
                 required
               />
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="border-2 w-full px-4 py-3 rounded-full focus:outline-none focus:border-soft-rose"
+                className="w-full px-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:border-aurora-green"
               >
                 <option value="customer">Я покупатель</option>
                 <option value="seller">Я мастер</option>
@@ -82,16 +90,24 @@ export default function Login() {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="border-2 w-full px-4 py-3 rounded-full focus:outline-none focus:border-soft-rose"
+            className="w-full px-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:border-aurora-green"
+            required
+          />
+          <input
+            type="password"
+            placeholder="Пароль"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:border-aurora-green"
             required
           />
           <button type="submit" className="btn-primary w-full py-3 text-lg">
-            {isSignUp ? 'Зарегистрироваться' : 'Получить ссылку на вход'}
+            {isSignUp ? 'Зарегистрироваться' : 'Войти'}
           </button>
         </form>
         <button
           onClick={() => setIsSignUp(!isSignUp)}
-          className="text-soft-rose underline mt-6 w-full text-center"
+          className="text-aurora-green hover:underline mt-6 w-full text-center text-sm"
         >
           {isSignUp
             ? 'Уже есть аккаунт? Войти'

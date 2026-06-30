@@ -1,53 +1,49 @@
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
-import ProductCard from '../components/ProductCard';
-import { useEffect, useState } from 'react';
-import { supabase } from '../lib/supabase';
-import Link from 'next/link';
 
-export default function Home() {
-  const [featured, setFeatured] = useState([]);
+export default function Welcome() {
+  const router = useRouter();
+
+  // Автоматический переход через 5 секунд (можно убрать, если не нужно)
   useEffect(() => {
-    supabase
-      .from('products')
-      .select('*')
-      .limit(4)
-      .then(({ data }) => setFeatured(data || []));
+    const timer = setTimeout(() => {
+      router.push('/catalog');
+    }, 5000);
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <Layout>
-      <section className="text-center my-16">
-        <h1 className="text-5xl font-heading font-bold text-gray-900 mb-6">
-          Добро пожаловать в ЛилиВяжет!
+      <div className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4 animate-fade-in">
+        {/* Логотип */}
+        <img
+          src="https://wzcysenonxyjlksnaezi.supabase.co/storage/v1/object/public/logos/8bfb04f2-3e69-4912-83ca-0d21f122fd28.jfif"
+          alt="Лили Вяжет"
+          className="w-48 h-48 md:w-64 md:h-64 object-contain mb-8 drop-shadow-xl"
+        />
+
+        {/* Название бренда */}
+        <h1 className="text-4xl md:text-6xl font-heading font-bold mb-4">
+          <span className="text-[#7E5C3A] font-light">Лили</span>{' '}
+          <span className="bg-gradient-to-r from-aurora-green via-aurora-blue to-aurora-purple bg-clip-text text-transparent">
+            Вяжет
+          </span>
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
-          Уютные игрушки ручной работы, мастер‑классы и вдохновение от талантливых мастеров
-        </p>
-        <Link href="/catalog" className="btn-primary text-lg px-10 py-4">
-          Смотреть готовые работы
-        </Link>
-      </section>
 
-      {/* Разделитель с голографической линией */}
-      <div className="flex items-center gap-4 mb-12">
-        <div className="accent-line" />
-        <h2 className="text-2xl font-heading font-semibold text-gray-800 whitespace-nowrap">
-          Популярные игрушки
-        </h2>
-        <div className="accent-line" />
+        {/* Слоган */}
+        <p className="text-lg md:text-xl text-gray-600 max-w-xl mb-10">
+          Авторские игрушки ручной работы, мастер‑классы и тепло души
+        </p>
+
+        {/* Кнопка входа в каталог */}
+        <button
+          onClick={() => router.push('/catalog')}
+          className="btn-primary text-lg px-10 py-4"
+        >
+          Смотреть работы
+        </button>
       </div>
-
-      {featured.length === 0 ? (
-        <p className="text-center text-gray-500 py-12">
-          Пока нет товаров — станьте первым мастером!
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featured.map((p) => (
-            <ProductCard key={p.id} product={p} />
-          ))}
-        </div>
-      )}
     </Layout>
   );
 }

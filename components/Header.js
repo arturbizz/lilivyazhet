@@ -4,63 +4,89 @@ import { useAuth, useCart } from '../lib/store';
 
 const AnimatedLogo = () => (
   <svg
-    width="44"
-    height="44"
-    viewBox="0 0 100 100"
+    width="64"
+    height="64"
+    viewBox="0 0 120 120"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
-    className="drop-shadow-sm"
+    className="drop-shadow-md"
   >
-    {/* Левая спица */}
-    <line x1="25" y1="20" x2="25" y2="80" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round">
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0s" fill="freeze" />
-    </line>
-    <circle cx="25" cy="20" r="4" fill="#DCC7A3">
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0s" fill="freeze" />
-    </circle>
+    {/* Горизонтальные спицы */}
+    <g>
+      {/* Верхняя спица */}
+      <line x1="10" y1="45" x2="110" y2="45" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round">
+        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0s" fill="freeze" />
+      </line>
+      <circle cx="10" cy="45" r="4" fill="#DCC7A3">
+        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0s" fill="freeze" />
+      </circle>
+      <circle cx="110" cy="45" r="4" fill="#DCC7A3">
+        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0.2s" fill="freeze" />
+      </circle>
 
-    {/* Правая спица */}
-    <line x1="75" y1="20" x2="75" y2="80" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round">
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.2s" fill="freeze" />
-    </line>
-    <circle cx="75" cy="20" r="4" fill="#DCC7A3">
-      <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.2s" fill="freeze" />
-    </circle>
+      {/* Нижняя спица */}
+      <line x1="10" y1="75" x2="110" y2="75" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round">
+        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0.4s" fill="freeze" />
+      </line>
+      <circle cx="10" cy="75" r="4" fill="#DCC7A3">
+        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0.4s" fill="freeze" />
+      </circle>
+      <circle cx="110" cy="75" r="4" fill="#DCC7A3">
+        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0.6s" fill="freeze" />
+      </circle>
+    </g>
 
-    {/* Нить, обвивающая спицы */}
-    <path
-      d="M25,30 Q50,45 25,60 Q50,75 25,85"
-      stroke="#00E5A0"
-      strokeWidth="2"
-      strokeLinecap="round"
-      fill="none"
-      strokeDasharray="100"
-      strokeDashoffset="100"
-    >
-      <animate
-        attributeName="stroke-dashoffset"
-        from="100" to="0"
-        dur="2s"
-        begin="0.5s"
-        fill="freeze"
-      />
-    </path>
+    {/* Вязание: петли между спицами (имитация процесса) */}
+    {[0, 1, 2, 3, 4].map((i) => (
+      <path
+        key={i}
+        d={`M${20 + i * 20},45 Q${30 + i * 20},60 ${20 + i * 20},75`}
+        stroke="#00E5A0"
+        strokeWidth="2"
+        fill="none"
+        strokeDasharray="30"
+        strokeDashoffset="30"
+        strokeLinecap="round"
+      >
+        <animate
+          attributeName="stroke-dashoffset"
+          from="30" to="0"
+          dur="0.5s"
+          begin={`${1.2 + i * 0.3}s`}
+          fill="freeze"
+        />
+      </path>
+    ))}
 
-    {/* Мишка (появляется после нити) */}
+    {/* Исчезновение спиц и петель */}
+    <animate attributeName="opacity" from="1" to="0" dur="1s" begin="3s" fill="freeze" />
+
+    {/* Мишка (появляется после исчезновения спиц) */}
     <g opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="1s" begin="2.5s" fill="freeze" />
-      <circle cx="40" cy="38" r="5" fill="#DCC7A3" />
-      <circle cx="60" cy="38" r="5" fill="#DCC7A3" />
-      <circle cx="40" cy="38" r="2.5" fill="#F5D5C6" />
-      <circle cx="60" cy="38" r="2.5" fill="#F5D5C6" />
-      <circle cx="50" cy="50" r="10" fill="#DCC7A3" />
-      <circle cx="50" cy="53" r="4" fill="#F5D5C6" />
-      <circle cx="50" cy="52" r="1.2" fill="#4A3522" />
-      <circle cx="46" cy="48" r="1.5" fill="#4A3522" />
-      <circle cx="54" cy="48" r="1.5" fill="#4A3522" />
-      <ellipse cx="50" cy="70" rx="12" ry="14" fill="#DCC7A3" />
-      <circle cx="40" cy="76" r="4" fill="#DCC7A3" />
-      <circle cx="60" cy="76" r="4" fill="#DCC7A3" />
+      <animate attributeName="opacity" from="0" to="1" dur="1s" begin="4s" fill="freeze" />
+      {/* Уши */}
+      <circle cx="42" cy="32" r="8" fill="#DCC7A3" />
+      <circle cx="78" cy="32" r="8" fill="#DCC7A3" />
+      <circle cx="42" cy="32" r="4" fill="#F5D5C6" />
+      <circle cx="78" cy="32" r="4" fill="#F5D5C6" />
+      {/* Голова */}
+      <circle cx="60" cy="48" r="16" fill="#DCC7A3" />
+      {/* Мордочка */}
+      <ellipse cx="60" cy="54" rx="7" ry="5" fill="#F5D5C6" />
+      <circle cx="60" cy="52" r="2" fill="#4A3522" />
+      {/* Глаза */}
+      <circle cx="53" cy="45" r="2.5" fill="#4A3522" />
+      <circle cx="67" cy="45" r="2.5" fill="#4A3522" />
+      {/* Тело */}
+      <ellipse cx="60" cy="78" rx="18" ry="20" fill="#DCC7A3" />
+      {/* Животик */}
+      <ellipse cx="60" cy="80" rx="10" ry="12" fill="#F5D5C6" />
+      {/* Ручки */}
+      <ellipse cx="38" cy="70" rx="8" ry="12" fill="#DCC7A3" transform="rotate(-20, 38, 70)" />
+      <ellipse cx="82" cy="70" rx="8" ry="12" fill="#DCC7A3" transform="rotate(20, 82, 70)" />
+      {/* Ножки */}
+      <ellipse cx="46" cy="98" rx="9" ry="7" fill="#DCC7A3" />
+      <ellipse cx="74" cy="98" rx="9" ry="7" fill="#DCC7A3" />
     </g>
   </svg>
 );

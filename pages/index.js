@@ -6,46 +6,49 @@ export default function Welcome() {
 
   return (
     <Layout>
-      <div className="relative w-full h-[80vh] overflow-hidden">
-        {/* Видеофон – выровнен без обрезки (object-contain) */}
+      {/* Hero-блок во весь экран */}
+      <div className="relative w-full h-screen overflow-hidden">
+        {/* Видеофон – заполняет всё без полос */}
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-contain bg-black"
+          className="absolute inset-0 w-full h-full object-cover"
           src="https://wzcysenonxyjlksnaezi.supabase.co/storage/v1/object/public/videos/vkclips_20260630054538.mp4"
         />
 
-        {/* Затемнение для читаемости текста */}
-        <div className="absolute inset-0 bg-black/30" />
+        {/* Мягкое затемнение по всей поверхности */}
+        <div className="absolute inset-0 bg-black/40" />
 
-        {/* Контент поверх видео */}
-        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 animate-fade-in">
-          {/* Название бренда – прозрачные буквы с обводкой */}
-          <h1
-            className="text-4xl md:text-6xl font-heading font-bold mb-6 drop-shadow-md"
-            style={{
-              WebkitTextStroke: '1px rgba(255,255,255,0.9)',
-              color: 'transparent',
-              fontFamily: '"Plus Jakarta Sans", sans-serif',
-            }}
-          >
-            Лили Вяжет
-          </h1>
+        {/* Контент – смещён вниз, аккуратные отступы */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 pb-16 md:pb-24 px-6">
+          <div className="max-w-2xl mx-auto text-center">
+            {/* Прозрачный заголовок с обводкой + лёгкая тень */}
+            <h1
+              className="text-5xl md:text-7xl font-heading font-bold mb-6 tracking-wide drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
+              style={{
+                WebkitTextStroke: '1px rgba(255,255,255,0.8)',
+                color: 'transparent',
+                fontFamily: '"Plus Jakarta Sans", sans-serif',
+              }}
+            >
+              Лили Вяжет
+            </h1>
 
-          {/* Слоган */}
-          <p className="text-lg md:text-xl text-white/90 max-w-xl mb-10 drop-shadow">
-            Авторские игрушки ручной работы, мастер‑классы и тепло души
-          </p>
+            {/* Слоган */}
+            <p className="text-base md:text-xl text-white/90 max-w-xl mx-auto mb-8 drop-shadow-md">
+              Авторские игрушки ручной работы, мастер‑классы и тепло души
+            </p>
 
-          {/* Кнопка */}
-          <button
-            onClick={() => router.push('/catalog')}
-            className="btn-primary text-lg px-10 py-4"
-          >
-            Смотреть авторские работы в наличии
-          </button>
+            {/* Кнопка */}
+            <button
+              onClick={() => router.push('/catalog')}
+              className="btn-primary text-base md:text-lg px-8 py-3"
+            >
+              Смотреть авторские работы в наличии
+            </button>
+          </div>
         </div>
       </div>
     </Layout>

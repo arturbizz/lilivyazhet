@@ -1,17 +1,8 @@
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
+import { useRouter } from 'next/router';
 
 export default function Welcome() {
   const router = useRouter();
-
-  // Автоматический переход через 5 секунд (можно убрать, если не нужно)
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      router.push('/catalog');
-    }, 5000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <Layout>
@@ -36,12 +27,12 @@ export default function Welcome() {
           Авторские игрушки ручной работы, мастер‑классы и тепло души
         </p>
 
-        {/* Кнопка входа в каталог */}
+        {/* Кнопка перехода – теперь без автоматики */}
         <button
           onClick={() => router.push('/catalog')}
           className="btn-primary text-lg px-10 py-4"
         >
-          Смотреть работы
+          Смотреть авторские работы в наличии
         </button>
       </div>
     </Layout>

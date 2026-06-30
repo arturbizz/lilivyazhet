@@ -2,16 +2,78 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth, useCart } from '../lib/store';
 
-const AuroraLogo = () => (
-  <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32">
-        <stop stopColor="#00E5A0" />
-        <stop offset="1" stopColor="#7B61FF" />
-      </linearGradient>
-    </defs>
-    <circle cx="16" cy="16" r="14" stroke="url(#logoGrad)" strokeWidth="2" strokeDasharray="3 3" fill="white" />
-    <circle cx="16" cy="16" r="5" fill="url(#logoGrad)" fillOpacity="0.2" stroke="url(#logoGrad)" strokeWidth="1" />
+// Анимированный логотип: спицы + нить → мишка
+const AnimatedLogo = () => (
+  <svg
+    width="40"
+    height="40"
+    viewBox="0 0 100 100"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    className="drop-shadow-sm"
+  >
+    {/* Спица левая */}
+    <g transform="translate(10, 10)">
+      <line
+        x1="20" y1="0" x2="20" y2="70"
+        stroke="#B38B5B" strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <circle cx="20" cy="0" r="3" fill="#DCC7A3" />
+    </g>
+
+    {/* Спица правая */}
+    <g transform="translate(70, 10)">
+      <line
+        x1="0" y1="0" x2="0" y2="70"
+        stroke="#B38B5B" strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <circle cx="0" cy="0" r="3" fill="#DCC7A3" />
+    </g>
+
+    {/* Нить */}
+    <path
+      d="M30,15 Q50,30 30,45 Q10,60 30,75 Q50,90 70,75"
+      stroke="#00E5A0"
+      strokeWidth="2"
+      strokeDasharray="80"
+      strokeDashoffset="80"
+      fill="none"
+      strokeLinecap="round"
+    >
+      <animate
+        attributeName="stroke-dashoffset"
+        from="80" to="0"
+        dur="2s"
+        begin="0s"
+        fill="freeze"
+      />
+    </path>
+
+    {/* Мишка (появляется после анимации нити) */}
+    <g opacity="0">
+      <animate
+        attributeName="opacity"
+        from="0" to="1"
+        dur="1s"
+        begin="2.5s"
+        fill="freeze"
+      />
+      {/* Тело мишки */}
+      <circle cx="50" cy="60" r="12" fill="#C7A87B" />
+      {/* Голова */}
+      <circle cx="50" cy="45" r="8" fill="#C7A87B" />
+      {/* Уши */}
+      <circle cx="43" cy="38" r="4" fill="#C7A87B" />
+      <circle cx="57" cy="38" r="4" fill="#C7A87B" />
+      <circle cx="43" cy="38" r="2" fill="#F5D5C6" />
+      <circle cx="57" cy="38" r="2" fill="#F5D5C6" />
+      {/* Глаза и нос */}
+      <circle cx="47" cy="44" r="1.5" fill="#4A3522" />
+      <circle cx="53" cy="44" r="1.5" fill="#4A3522" />
+      <circle cx="50" cy="48" r="1.5" fill="#4A3522" />
+    </g>
   </svg>
 );
 
@@ -25,8 +87,8 @@ export default function Header() {
     <header className="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3">
         {/* Логотип */}
-        <Link href="/" className="flex items-center gap-2 z-10">
-          <AuroraLogo />
+        <Link href="/" className="flex items-center gap-3 group">
+          <AnimatedLogo />
           <span className="text-xl font-heading font-bold bg-gradient-to-r from-aurora-green to-aurora-purple bg-clip-text text-transparent">
             ЛилиВяжет
           </span>

@@ -5,18 +5,25 @@
 
 html, body {
   @apply font-sans text-gray-900;
-  cursor: default;
+  cursor: default;                       /* ← по умолчанию везде стрелка */
   background: linear-gradient(180deg, #F9FAFC 0%, #F2F5F9 100%);
   min-height: 100vh;
-  overflow-x: hidden; /* убирает сдвиг вправо */
+  overflow-x: hidden;
 }
 
+/* Текстовый курсор только там, где реально вводится текст */
 input, textarea, [contenteditable="true"] {
   cursor: text;
 }
 
+/* Указатель (палец) на интерактивных элементах */
 a, button, [role="button"], select, .clickable, label {
   cursor: pointer;
+}
+
+/* Статические блоки – явно задаём стрелку, чтобы перебить любые остаточные стили */
+.card, .btn-primary, .btn-secondary, header, footer, nav, .accent-line {
+  cursor: default;
 }
 
 /* Основная кнопка с постоянным легким сиянием */

@@ -20,20 +20,21 @@ export default function Home() {
         <h1 className="text-5xl font-heading font-bold text-gray-900 mb-6">
           Добро пожаловать в ЛилиВяжет!
         </h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-10">
           Уютные игрушки ручной работы, мастер‑классы и вдохновение от талантливых мастеров
         </p>
         <Link href="/catalog" className="btn-primary text-lg px-10 py-4">
-          Смотреть каталог
+          Смотреть готовые работы
         </Link>
       </section>
 
-      <div className="flex items-center gap-4 mb-10">
-        <div className="h-px flex-1 bg-gray-200" />
+      {/* Разделитель с голографической линией */}
+      <div className="flex items-center gap-4 mb-12">
+        <div className="accent-line" />
         <h2 className="text-2xl font-heading font-semibold text-gray-800 whitespace-nowrap">
           Популярные игрушки
         </h2>
-        <div className="h-px flex-1 bg-gray-200" />
+        <div className="accent-line" />
       </div>
 
       {featured.length === 0 ? (

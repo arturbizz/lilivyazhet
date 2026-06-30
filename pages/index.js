@@ -7,13 +7,13 @@ export default function Welcome() {
   return (
     <Layout>
       <div className="relative w-full h-[80vh] overflow-hidden">
-        {/* Видеофон */}
+        {/* Видеофон – выровнен без обрезки (object-contain) */}
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-contain bg-black"
           src="https://wzcysenonxyjlksnaezi.supabase.co/storage/v1/object/public/videos/vkclips_20260630054538.mp4"
         />
 
@@ -22,19 +22,16 @@ export default function Welcome() {
 
         {/* Контент поверх видео */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4 animate-fade-in">
-          {/* Логотип */}
-          <img
-            src="https://wzcysenonxyjlksnaezi.supabase.co/storage/v1/object/public/logos/8bfb04f2-3e69-4912-83ca-0d21f122fd28.jfif"
-            alt="Лили Вяжет"
-            className="w-32 h-32 md:w-40 md:h-40 object-contain mb-6 drop-shadow-lg"
-          />
-
-          {/* Название бренда */}
-          <h1 className="text-4xl md:text-6xl font-heading font-bold mb-4 text-white drop-shadow-md">
-            <span className="font-light text-[#F5D5C6]">Лили</span>{' '}
-            <span className="bg-gradient-to-r from-aurora-green via-aurora-blue to-aurora-purple bg-clip-text text-transparent">
-              Вяжет
-            </span>
+          {/* Название бренда – прозрачные буквы с обводкой */}
+          <h1
+            className="text-4xl md:text-6xl font-heading font-bold mb-6 drop-shadow-md"
+            style={{
+              WebkitTextStroke: '1px rgba(255,255,255,0.9)',
+              color: 'transparent',
+              fontFamily: '"Plus Jakarta Sans", sans-serif',
+            }}
+          >
+            Лили Вяжет
           </h1>
 
           {/* Слоган */}

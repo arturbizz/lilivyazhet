@@ -15,37 +15,52 @@ const AnimatedLogo = () => (
     <g>
       <animate attributeName="opacity" from="1" to="0" dur="1s" begin="3s" fill="freeze" />
       {/* Верхняя спица */}
-      <line x1="10" y1="45" x2="110" y2="45" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="10" cy="45" r="4" fill="#DCC7A3" />
-      <circle cx="110" cy="45" r="4" fill="#DCC7A3" />
+      <line x1="10" y1="40" x2="110" y2="40" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round">
+        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0s" fill="freeze" />
+      </line>
+      <circle cx="10" cy="40" r="4" fill="#DCC7A3">
+        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0s" fill="freeze" />
+      </circle>
+      <circle cx="110" cy="40" r="4" fill="#DCC7A3">
+        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.2s" fill="freeze" />
+      </circle>
+
       {/* Нижняя спица */}
-      <line x1="10" y1="75" x2="110" y2="75" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round" />
-      <circle cx="10" cy="75" r="4" fill="#DCC7A3" />
-      <circle cx="110" cy="75" r="4" fill="#DCC7A3" />
-      {/* Петли (5 штук) */}
+      <line x1="10" y1="70" x2="110" y2="70" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round">
+        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.3s" fill="freeze" />
+      </line>
+      <circle cx="10" cy="70" r="4" fill="#DCC7A3">
+        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.3s" fill="freeze" />
+      </circle>
+      <circle cx="110" cy="70" r="4" fill="#DCC7A3">
+        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.5s" fill="freeze" />
+      </circle>
+
+      {/* Перекрестные петли (5 штук) */}
       {[0, 1, 2, 3, 4].map((i) => (
         <path
           key={i}
-          d={`M${20 + i * 20},45 Q${30 + i * 20},60 ${20 + i * 20},75`}
+          d={`M${20 + i * 20},40 L${30 + i * 20},55 L${20 + i * 20},70`}
           stroke="#00E5A0"
           strokeWidth="2"
           fill="none"
-          strokeDasharray="30"
-          strokeDashoffset="30"
+          strokeDasharray="40"
+          strokeDashoffset="40"
           strokeLinecap="round"
+          strokeLinejoin="round"
         >
           <animate
             attributeName="stroke-dashoffset"
-            from="30" to="0"
+            from="40" to="0"
             dur="0.5s"
-            begin={`${0.8 + i * 0.3}s`}
+            begin={`${1.0 + i * 0.3}s`}
             fill="freeze"
           />
         </path>
       ))}
     </g>
 
-    {/* Мишка (появляется после исчезновения спиц) */}
+    {/* Медвежонок (появляется после исчезновения спиц) */}
     <g opacity="0">
       <animate attributeName="opacity" from="0" to="1" dur="1s" begin="3.5s" fill="freeze" />
       {/* Уши */}
@@ -61,13 +76,21 @@ const AnimatedLogo = () => (
       {/* Глаза */}
       <circle cx="53" cy="45" r="2.5" fill="#4A3522" />
       <circle cx="67" cy="45" r="2.5" fill="#4A3522" />
+      {/* Улыбка */}
+      <path
+        d="M56,57 Q60,61 64,57"
+        stroke="#4A3522"
+        strokeWidth="1.5"
+        fill="none"
+        strokeLinecap="round"
+      />
       {/* Тело */}
       <ellipse cx="60" cy="78" rx="18" ry="20" fill="#DCC7A3" />
       {/* Животик */}
       <ellipse cx="60" cy="80" rx="10" ry="12" fill="#F5D5C6" />
-      {/* Ручки */}
-      <ellipse cx="38" cy="70" rx="8" ry="12" fill="#DCC7A3" transform="rotate(-20, 38, 70)" />
-      <ellipse cx="82" cy="70" rx="8" ry="12" fill="#DCC7A3" transform="rotate(20, 82, 70)" />
+      {/* Ручки (уменьшенные) */}
+      <ellipse cx="38" cy="70" rx="6" ry="9" fill="#DCC7A3" transform="rotate(-20, 38, 70)" />
+      <ellipse cx="82" cy="70" rx="6" ry="9" fill="#DCC7A3" transform="rotate(20, 82, 70)" />
       {/* Ножки */}
       <ellipse cx="46" cy="98" rx="9" ry="7" fill="#DCC7A3" />
       <ellipse cx="74" cy="98" rx="9" ry="7" fill="#DCC7A3" />
@@ -88,7 +111,7 @@ export default function Header() {
           <AnimatedLogo />
           <span className="text-xl font-heading font-bold whitespace-nowrap">
             <span className="font-light text-[#7E5C3A]">Лили</span>
-            <span className="mx-1 text-aurora-green align-middle">❄</span>
+            {' '}
             <span className="bg-gradient-to-r from-aurora-green via-aurora-blue to-aurora-purple bg-clip-text text-transparent">
               Вяжет
             </span>

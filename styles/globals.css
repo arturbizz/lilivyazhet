@@ -5,113 +5,23 @@
 
 html, body {
   @apply font-sans text-gray-900;
-  cursor: default;                       /* по умолчанию везде стрелка */
   background: linear-gradient(180deg, #F9FAFC 0%, #F2F5F9 100%);
   min-height: 100vh;
   overflow-x: hidden;
+  cursor: default;                /* 🔥 убирает текстовый курсор со всего */
 }
 
-/* Текстовый курсор только в полях ввода */
+/* Текстовый курсор (мигающая палочка) только там, где реально вводим текст */
 input, textarea, [contenteditable="true"] {
   cursor: text;
 }
 
-/* Указатель (палец) на интерактивных элементах */
+/* Кликабельные элементы — стрелка или pointer */
 a, button, [role="button"], select, .clickable, label {
   cursor: pointer;
 }
 
-/* Статические блоки – явно задаём стрелку, чтобы перебить любые остаточные стили */
-.card, .btn-primary, .btn-secondary, header, footer, nav, .accent-line {
-  cursor: default;
-}
+/* Основная кнопка */
+.btn-primary { ... /* (весь остальной код без изменений) */ }
 
-/* Основная кнопка с постоянным легким сиянием */
-.btn-primary {
-  @apply relative inline-flex items-center justify-center px-6 py-3
-         bg-white text-gray-800 font-medium rounded-full
-         border border-gray-200
-         transition-all duration-300 ease-out
-         select-none;
-  box-shadow: 0 0 8px rgba(0, 229, 160, 0.15);
-  background-clip: padding-box;
-}
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 9999px;
-  padding: 1px;
-  background: linear-gradient(135deg, #00E5A0, #00C2FF, #7B61FF, #00E5A0);
-  background-size: 300% 300%;
-  animation: aurora-rotate 6s ease infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
-}
-.btn-primary:hover {
-  @apply border-gray-300;
-  box-shadow: 0 0 20px rgba(0, 229, 160, 0.35);
-}
-.btn-primary:hover::before {
-  opacity: 1;
-}
-.btn-primary:active {
-  @apply bg-gray-50;
-}
-
-/* Вторичная кнопка */
-.btn-secondary {
-  @apply relative inline-flex items-center justify-center px-6 py-3
-         bg-white text-gray-600 font-medium rounded-full
-         border border-gray-200
-         transition-all duration-300 ease-out
-         select-none;
-}
-.btn-secondary:hover {
-  @apply border-gray-300 text-gray-800;
-  box-shadow: 0 0 12px rgba(0, 194, 255, 0.15);
-}
-
-/* Карточка товара */
-.card {
-  @apply bg-white rounded-2xl shadow-sm hover:shadow-md
-         transition-all duration-300 p-5
-         border border-gray-100;
-  position: relative;
-}
-.card::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: 18px;
-  padding: 1px;
-  background: linear-gradient(135deg, #00E5A0, #00C2FF, #7B61FF);
-  background-size: 200% 200%;
-  animation: aurora-rotate 6s ease infinite;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0;
-  transition: opacity 0.4s;
-}
-.card:hover::after {
-  opacity: 1;
-}
-
-@keyframes aurora-rotate {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Тонкие акцентные линии */
-.accent-line {
-  @apply h-px flex-1;
-  background: linear-gradient(90deg, transparent, #00C2FF, #7B61FF, #00E5A0, transparent);
-  opacity: 0.3;
-}
+/* ... */

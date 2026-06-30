@@ -5,17 +5,13 @@
 
 /* Убираем мигающий курсор со ВСЕХ элементов */
 * {
-  cursor: default;
+  cursor: default !important;
 }
-
-/* Возвращаем текстовый курсор только в поля ввода */
 input, textarea, [contenteditable="true"] {
-  cursor: text;
+  cursor: text !important;
 }
-
-/* Кликабельные элементы – стрелка */
 a, button, [role="button"], select, .clickable, label {
-  cursor: pointer;
+  cursor: pointer !important;
 }
 
 html, body {

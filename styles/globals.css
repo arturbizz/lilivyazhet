@@ -3,20 +3,26 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Убираем мигающий курсор со ВСЕХ элементов */
+* {
+  cursor: default;
+}
+
+/* Возвращаем текстовый курсор только в поля ввода */
+input, textarea, [contenteditable="true"] {
+  cursor: text;
+}
+
+/* Кликабельные элементы – стрелка */
+a, button, [role="button"], select, .clickable, label {
+  cursor: pointer;
+}
+
 html, body {
   @apply font-sans text-gray-900;
   background: linear-gradient(180deg, #F9FAFC 0%, #F2F5F9 100%);
   min-height: 100vh;
   overflow-x: hidden;
-  cursor: default;
-}
-
-input, textarea, [contenteditable="true"] {
-  cursor: text;
-}
-
-a, button, [role="button"], select, .clickable, label {
-  cursor: pointer;
 }
 
 /* Основная кнопка с постоянным легким сиянием */

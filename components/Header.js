@@ -11,13 +11,19 @@ export default function Header() {
   return (
     <header className="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-2">
-        {/* Логотип-картинка (ссылка на главную) */}
-        <Link href="/" className="flex-shrink-0">
+        {/* Логотип + название */}
+        <Link href="/" className="flex items-center gap-3 flex-shrink-0">
           <img
             src="https://wzcysenonxyjlksnaezi.supabase.co/storage/v1/object/public/logos/8bfb04f2-3e69-4912-83ca-0d21f122fd28.jfif"
             alt="Лили Вяжет"
             className="h-10 md:h-12 w-auto object-contain"
           />
+          <span className="text-xl font-heading font-bold whitespace-nowrap">
+            <span className="font-light text-[#7E5C3A]">Лили</span>{' '}
+            <span className="bg-gradient-to-r from-aurora-green via-aurora-blue to-aurora-purple bg-clip-text text-transparent">
+              Вяжет
+            </span>
+          </span>
         </Link>
 
         {/* Гамбургер (мобильные) */}
@@ -37,7 +43,6 @@ export default function Header() {
 
         {/* Навигация (десктоп) */}
         <nav className="hidden md:flex items-center gap-6 ml-auto">
-          {/* Бывший "Каталог" */}
           <Link href="/catalog" className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm lg:text-base">
             Авторские работы в наличии
           </Link>

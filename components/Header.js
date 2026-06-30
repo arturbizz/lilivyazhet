@@ -2,102 +2,6 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { useAuth, useCart } from '../lib/store';
 
-const AnimatedLogo = () => (
-  <svg
-    width="64"
-    height="64"
-    viewBox="0 0 120 120"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className="drop-shadow-md"
-  >
-    {/* Группа: спицы + петли (появляются, потом исчезают) */}
-    <g>
-      <animate attributeName="opacity" from="1" to="0" dur="1s" begin="3s" fill="freeze" />
-      {/* Верхняя спица */}
-      <line x1="10" y1="40" x2="110" y2="40" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round">
-        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0s" fill="freeze" />
-      </line>
-      <circle cx="10" cy="40" r="4" fill="#DCC7A3">
-        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0s" fill="freeze" />
-      </circle>
-      <circle cx="110" cy="40" r="4" fill="#DCC7A3">
-        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.2s" fill="freeze" />
-      </circle>
-
-      {/* Нижняя спица */}
-      <line x1="10" y1="70" x2="110" y2="70" stroke="#B38B5B" strokeWidth="2.5" strokeLinecap="round">
-        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.3s" fill="freeze" />
-      </line>
-      <circle cx="10" cy="70" r="4" fill="#DCC7A3">
-        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.3s" fill="freeze" />
-      </circle>
-      <circle cx="110" cy="70" r="4" fill="#DCC7A3">
-        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="0.5s" fill="freeze" />
-      </circle>
-
-      {/* Перекрестные петли (5 штук) */}
-      {[0, 1, 2, 3, 4].map((i) => (
-        <path
-          key={i}
-          d={`M${20 + i * 20},40 L${30 + i * 20},55 L${20 + i * 20},70`}
-          stroke="#00E5A0"
-          strokeWidth="2"
-          fill="none"
-          strokeDasharray="40"
-          strokeDashoffset="40"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <animate
-            attributeName="stroke-dashoffset"
-            from="40" to="0"
-            dur="0.5s"
-            begin={`${1.0 + i * 0.3}s`}
-            fill="freeze"
-          />
-        </path>
-      ))}
-    </g>
-
-    {/* Медвежонок (появляется после исчезновения спиц) */}
-    <g opacity="0">
-      <animate attributeName="opacity" from="0" to="1" dur="1s" begin="3.5s" fill="freeze" />
-      {/* Уши */}
-      <circle cx="42" cy="32" r="8" fill="#DCC7A3" />
-      <circle cx="78" cy="32" r="8" fill="#DCC7A3" />
-      <circle cx="42" cy="32" r="4" fill="#F5D5C6" />
-      <circle cx="78" cy="32" r="4" fill="#F5D5C6" />
-      {/* Голова */}
-      <circle cx="60" cy="48" r="16" fill="#DCC7A3" />
-      {/* Мордочка */}
-      <ellipse cx="60" cy="54" rx="7" ry="5" fill="#F5D5C6" />
-      <circle cx="60" cy="52" r="2" fill="#4A3522" />
-      {/* Глаза */}
-      <circle cx="53" cy="45" r="2.5" fill="#4A3522" />
-      <circle cx="67" cy="45" r="2.5" fill="#4A3522" />
-      {/* Улыбка */}
-      <path
-        d="M56,57 Q60,61 64,57"
-        stroke="#4A3522"
-        strokeWidth="1.5"
-        fill="none"
-        strokeLinecap="round"
-      />
-      {/* Тело */}
-      <ellipse cx="60" cy="78" rx="18" ry="20" fill="#DCC7A3" />
-      {/* Животик */}
-      <ellipse cx="60" cy="80" rx="10" ry="12" fill="#F5D5C6" />
-      {/* Ручки (уменьшенные) */}
-      <ellipse cx="38" cy="70" rx="6" ry="9" fill="#DCC7A3" transform="rotate(-20, 38, 70)" />
-      <ellipse cx="82" cy="70" rx="6" ry="9" fill="#DCC7A3" transform="rotate(20, 82, 70)" />
-      {/* Ножки */}
-      <ellipse cx="46" cy="98" rx="9" ry="7" fill="#DCC7A3" />
-      <ellipse cx="74" cy="98" rx="9" ry="7" fill="#DCC7A3" />
-    </g>
-  </svg>
-);
-
 export default function Header() {
   const { user, logout } = useAuth();
   const items = useCart(s => s.items);
@@ -106,18 +10,17 @@ export default function Header() {
 
   return (
     <header className="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-3">
-        <Link href="/" className="flex items-center gap-3 group">
-          <AnimatedLogo />
-          <span className="text-xl font-heading font-bold whitespace-nowrap">
-            <span className="font-light text-[#7E5C3A]">Лили</span>
-            {' '}
-            <span className="bg-gradient-to-r from-aurora-green via-aurora-blue to-aurora-purple bg-clip-text text-transparent">
-              Вяжет
-            </span>
-          </span>
+      <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-2">
+        {/* Логотип-картинка (ссылка на главную) */}
+        <Link href="/" className="flex-shrink-0">
+          <img
+            src="https://wzcysenonxyjlksnaezi.supabase.co/storage/v1/object/public/logos/8bfb04f2-3e69-4912-83ca-0d21f122fd28.jfif"
+            alt="Лили Вяжет"
+            className="h-10 md:h-12 w-auto object-contain"
+          />
         </Link>
 
+        {/* Гамбургер (мобильные) */}
         <button
           className="md:hidden p-2 text-gray-600 hover:text-gray-900 z-20"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -132,14 +35,16 @@ export default function Header() {
           </svg>
         </button>
 
-        <nav className="hidden md:flex items-center gap-6">
-          <Link href="/catalog" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-            Готовые авторские работы
+        {/* Навигация (десктоп) */}
+        <nav className="hidden md:flex items-center gap-6 ml-auto">
+          {/* Бывший "Каталог" */}
+          <Link href="/catalog" className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm lg:text-base">
+            Авторские работы в наличии
           </Link>
-          <Link href="/gift-ideas" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+          <Link href="/gift-ideas" className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm lg:text-base">
             Идеи для подарка
           </Link>
-          <Link href="/masterclasses" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
+          <Link href="/masterclasses" className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm lg:text-base">
             Мастер‑классы
           </Link>
           <Link href="/cart" className="relative flex items-center gap-1 text-gray-600 hover:text-gray-900">
@@ -152,25 +57,26 @@ export default function Header() {
           </Link>
           {user ? (
             <>
-              <Link href={user.role === 'seller' ? '/dashboard/seller' : '/dashboard/customer'} className="text-gray-600 hover:text-gray-900 font-medium">
+              <Link href={user.role === 'seller' ? '/dashboard/seller' : '/dashboard/customer'} className="text-gray-600 hover:text-gray-900 font-medium text-sm lg:text-base">
                 Кабинет
               </Link>
-              <button onClick={logout} className="btn-secondary text-sm py-2 px-5">
+              <button onClick={logout} className="btn-secondary text-sm py-2 px-4">
                 Выйти
               </button>
             </>
           ) : (
-            <Link href="/login" className="btn-primary text-sm py-2 px-6">
+            <Link href="/login" className="btn-primary text-sm py-2 px-5">
               Войти
             </Link>
           )}
         </nav>
       </div>
 
+      {/* Мобильное меню */}
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-4">
           <Link href="/catalog" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>
-            Готовые авторские работы
+            Авторские работы в наличии
           </Link>
           <Link href="/gift-ideas" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>
             Идеи для подарка

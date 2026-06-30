@@ -5,6 +5,7 @@ import toast from 'react-hot-toast';
 
 export default function Login() {
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [isSignUp, setIsSignUp] = useState(false);
   const [name, setName] = useState('');
   const [role, setRole] = useState('customer');
@@ -12,24 +13,38 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSignUp) {
-      // Регистрация: просто отправляем ссылку, пароль не нужен
-      const { error } = await supabase.auth.signUp({
+      // Регистрация
+      const { data, error } = await supabase.auth.signUp({
         email,
+        password,
         options: { data: { full_name: name, role } },
       });
       if (error) {
         toast.error(error.message);
-      } else {
-        toast.success('Проверьте почту! Мы отправили ссылку для входа.');
+        return;
+      }
+      // После регистрации автоматически входим
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      if (signInError) {
+        toast.error('Аккаунт создан, но войти не удалось. Попробуйте вручную.');
         setIsSignUp(false);
+      } else {
+        toast.success('Добро пожаловать!');
+        // Редирект произойдёт автоматически через onAuthStateChange в _app.js
       }
     } else {
-      // Вход: отправляем магическую ссылку
-      const { error } = await supabase.auth.signInWithOtp({ email });
+      // Вход
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       if (error) {
-        toast.error(error.message);
+        toast.error('Неверный email или пароль');
       } else {
-        toast.success('Ссылка для входа отправлена на вашу почту!');
+        toast.success('Добро пожаловать!');
       }
     }
   };
@@ -69,10 +84,17 @@ export default function Login() {
             className="w-full px-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:border-aurora-green"
             required
           />
+          <input
+            type="password"
+            placeholder="Пароль"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-3 rounded-full border border-gray-200 focus:outline-none focus:border-aurora-green"
+            required
+            minLength={6}
+          />
           <button type="submit" className="btn-primary w-full py-3 text-lg">
-            {isSignUp
-              ? 'Зарегистрироваться'
-              : 'Получить ссылку для входа'}
+            {isSignUp ? 'Зарегистрироваться' : 'Войти'}
           </button>
         </form>
         <button

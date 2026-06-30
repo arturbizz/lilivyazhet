@@ -49,7 +49,7 @@ export default function MasterDashboard() {
 
   return (
     <Layout>
-      <h1 className="text-4xl font-heading font-bold text-gray-900 mb-2">Мой магазин</h1>
+      <h1 className="text-4xl font-heading font-bold text-gray-900 mb-2">Личный кабинет мастера</h1>
       <p className="text-lg text-gray-600 mb-8">Добро пожаловать, {profile?.full_name}!</p>
 
       {/* Статистика */}

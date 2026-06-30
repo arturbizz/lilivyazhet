@@ -16,19 +16,17 @@ export default function Login() {
         email,
         options: { data: { full_name: name, role } },
       });
-      if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success('Проверьте почту! Мы отправили ссылку для входа.');
-        setIsSignUp(false);
-      }
+      if (error) toast.error(error.message);
+      else toast.success('Проверьте почту! Мы отправили ссылку для входа.');
     } else {
-      const { error } = await supabase.auth.signInWithOtp({ email });
-      if (error) {
-        toast.error(error.message);
-      } else {
-        toast.success('Ссылка для входа отправлена на вашу почту!');
-      }
+      const { error } = await supabase.auth.signInWithOtp({
+        email,
+        options: {
+          redirectTo: 'https://arturbizz.github.io/lilivyazhet/auth/callback',
+        },
+      });
+      if (error) toast.error(error.message);
+      else toast.success('Ссылка для входа отправлена на вашу почту!');
     }
   };
 

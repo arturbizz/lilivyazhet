@@ -3,14 +3,14 @@ import { useAuth, useCart } from '../lib/store';
 
 const AuroraLogo = () => (
   <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="16" cy="16" r="14" stroke="url(#gradient)" strokeWidth="2" strokeDasharray="3 3" fill="white" />
-    <circle cx="16" cy="16" r="5" fill="#00E5A0" fillOpacity="0.2" stroke="#00E5A0" strokeWidth="1" />
     <defs>
-      <linearGradient id="gradient" x1="0" y1="0" x2="32" y2="32">
+      <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32">
         <stop stopColor="#00E5A0" />
-        <stop offset="1" stopColor="#00C2FF" />
+        <stop offset="1" stopColor="#7B61FF" />
       </linearGradient>
     </defs>
+    <circle cx="16" cy="16" r="14" stroke="url(#logoGrad)" strokeWidth="2" strokeDasharray="3 3" fill="white" />
+    <circle cx="16" cy="16" r="5" fill="url(#logoGrad)" fillOpacity="0.2" stroke="url(#logoGrad)" strokeWidth="1" />
   </svg>
 );
 
@@ -20,21 +20,21 @@ export default function Header() {
   const totalItems = items.reduce((sum, i) => sum + i.qty, 0);
 
   return (
-    <header className="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
+    <header className="bg-white/80 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
         <Link href="/" className="flex items-center gap-3 group">
           <AuroraLogo />
-          <span className="text-2xl font-heading font-bold text-gray-800 group-hover:text-aurora-green transition-colors">
+          <span className="text-2xl font-heading font-bold bg-gradient-to-r from-aurora-green to-aurora-purple bg-clip-text text-transparent">
             ЛилиВяжет
           </span>
         </Link>
 
         <nav className="flex items-center gap-8">
           <Link href="/catalog" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-            Каталог
+            Готовые авторские работы
           </Link>
           <Link href="/gift-ideas" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
-            🎁 Идеи
+            Идеи для подарка
           </Link>
           <Link href="/masterclasses" className="text-gray-600 hover:text-gray-900 font-medium transition-colors">
             Мастер‑классы

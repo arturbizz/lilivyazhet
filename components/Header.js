@@ -70,7 +70,7 @@ export default function Header() {
               )}
               {isMaster && (
                 <Link href="/dashboard/master" className="text-gray-600 hover:text-gray-900 font-medium text-sm lg:text-base">
-                  Мой магазин
+                  Личный кабинет мастера
                 </Link>
               )}
               {isBuyer && (
@@ -108,7 +108,7 @@ export default function Header() {
           {user ? (
             <>
               {isAdmin && <Link href="/admin" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>Админ</Link>}
-              {isMaster && <Link href="/dashboard/master" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>Мой магазин</Link>}
+              {isMaster && <Link href="/dashboard/master" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>Личный кабинет мастера</Link>}
               {isBuyer && <Link href="/dashboard/buyer" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>Кабинет</Link>}
               <button onClick={() => { logout(); setMenuOpen(false); }} className="btn-secondary w-full text-center py-2">Выйти</button>
             </>

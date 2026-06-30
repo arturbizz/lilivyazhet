@@ -5,7 +5,7 @@ export default function Masterclasses() {
     <Layout>
       <div className="max-w-5xl mx-auto py-16">
         <h1 className="text-5xl font-heading font-bold text-gray-900 mb-8 text-center">
-          🧶 Мастер‑классы
+          Мастер‑классы
         </h1>
         <p className="text-xl text-gray-600 text-center mb-16">
           Готовые видеоуроки и пошаговые инструкции от лучших мастеров
@@ -13,8 +13,11 @@ export default function Masterclasses() {
         <div className="grid md:grid-cols-2 gap-8">
           {['Вязаный зайка', 'Миниатюрный мишка', 'Кукла Тильда', 'Амигуруми для начинающих'].map((title, i) => (
             <div key={i} className="card flex items-center gap-6">
-              <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-aurora-green/20 to-aurora-blue/20 flex items-center justify-center text-3xl">
-                🎬
+              <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-aurora-green/20 to-aurora-blue/20 flex items-center justify-center">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#00E5A0" strokeWidth="1.5">
+                  <circle cx="12" cy="12" r="3" />
+                  <path d="M12 2a10 10 0 0 1 10 10" strokeDasharray="2 2" />
+                </svg>
               </div>
               <div>
                 <h3 className="font-heading font-semibold text-lg">{title}</h3>

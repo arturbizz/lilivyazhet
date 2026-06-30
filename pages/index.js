@@ -6,45 +6,40 @@ export default function Welcome() {
 
   return (
     <Layout>
-      {/* Hero-блок во весь экран */}
       <div className="relative w-full h-screen overflow-hidden">
-        {/* Видеофон – заполняет всё без полос */}
+        {/* Видеофон – заполняет всё, акцент по центру */}
         <video
           autoPlay
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-center"
           src="https://wzcysenonxyjlksnaezi.supabase.co/storage/v1/object/public/videos/vkclips_20260630054538.mp4"
         />
 
-        {/* Мягкое затемнение по всей поверхности */}
+        {/* Мягкое затемнение */}
         <div className="absolute inset-0 bg-black/40" />
 
-        {/* Контент – смещён вниз, аккуратные отступы */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 pb-16 md:pb-24 px-6">
+        {/* Контент – смещён вниз, большие отступы */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 pb-28 md:pb-36 px-6">
           <div className="max-w-2xl mx-auto text-center">
-            {/* Прозрачный заголовок с обводкой + лёгкая тень */}
-            <h1
-              className="text-5xl md:text-7xl font-heading font-bold mb-6 tracking-wide drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]"
-              style={{
-                WebkitTextStroke: '1px rgba(255,255,255,0.8)',
-                color: 'transparent',
-                fontFamily: '"Plus Jakarta Sans", sans-serif',
-              }}
-            >
-              Лили Вяжет
+            {/* Заголовок – чистый белый с глубокой тенью */}
+            <h1 className="text-5xl md:text-7xl font-heading font-bold text-white mb-6 tracking-wide drop-shadow-[0_4px_16px_rgba(0,0,0,0.7)]">
+              Лили{' '}
+              <span className="bg-gradient-to-r from-aurora-green via-aurora-blue to-aurora-purple bg-clip-text text-transparent drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+                Вяжет
+              </span>
             </h1>
 
             {/* Слоган */}
-            <p className="text-base md:text-xl text-white/90 max-w-xl mx-auto mb-8 drop-shadow-md">
+            <p className="text-base md:text-xl text-white/90 max-w-xl mx-auto mb-10 drop-shadow-md">
               Авторские игрушки ручной работы, мастер‑классы и тепло души
             </p>
 
-            {/* Кнопка */}
+            {/* Кнопка – тонкая, компактная, с отступом */}
             <button
               onClick={() => router.push('/catalog')}
-              className="btn-primary text-base md:text-lg px-8 py-3"
+              className="btn-primary text-sm md:text-base px-6 py-2.5 inline-block"
             >
               Смотреть авторские работы в наличии
             </button>

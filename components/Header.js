@@ -3,15 +3,18 @@ import { useState } from 'react';
 import { useAuth, useCart } from '../lib/store';
 
 export default function Header() {
-  const { user, logout } = useAuth();
+  const { user, profile, logout } = useAuth();
   const items = useCart(s => s.items);
   const totalItems = items.reduce((sum, i) => sum + i.qty, 0);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const isAdmin = profile?.role === 'admin';
+  const isMaster = profile?.role === 'master';
+  const isBuyer = profile?.role === 'buyer';
+
   return (
     <header className="bg-white/90 backdrop-blur-md border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex justify-between items-center px-4 py-2">
-        {/* Логотип + название */}
         <Link href="/" className="flex items-center gap-3 flex-shrink-0">
           <img
             src="https://wzcysenonxyjlksnaezi.supabase.co/storage/v1/object/public/logos/8bfb04f2-3e69-4912-83ca-0d21f122fd28.jfif"
@@ -26,7 +29,6 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* Гамбургер (мобильные) */}
         <button
           className="md:hidden p-2 text-gray-600 hover:text-gray-900 z-20"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -41,7 +43,6 @@ export default function Header() {
           </svg>
         </button>
 
-        {/* Навигация (десктоп) */}
         <nav className="hidden md:flex items-center gap-6 ml-auto">
           <Link href="/catalog" className="text-gray-600 hover:text-gray-900 font-medium transition-colors text-sm lg:text-base">
             Авторские работы в наличии
@@ -62,9 +63,21 @@ export default function Header() {
           </Link>
           {user ? (
             <>
-              <Link href={user.role === 'seller' ? '/dashboard/seller' : '/dashboard/customer'} className="text-gray-600 hover:text-gray-900 font-medium text-sm lg:text-base">
-                Кабинет
-              </Link>
+              {isAdmin && (
+                <Link href="/admin" className="text-gray-600 hover:text-gray-900 font-medium text-sm lg:text-base">
+                  Админ
+                </Link>
+              )}
+              {isMaster && (
+                <Link href="/dashboard/master" className="text-gray-600 hover:text-gray-900 font-medium text-sm lg:text-base">
+                  Мой магазин
+                </Link>
+              )}
+              {isBuyer && (
+                <Link href="/dashboard/buyer" className="text-gray-600 hover:text-gray-900 font-medium text-sm lg:text-base">
+                  Кабинет
+                </Link>
+              )}
               <button onClick={logout} className="btn-secondary text-sm py-2 px-4">
                 Выйти
               </button>
@@ -77,7 +90,6 @@ export default function Header() {
         </nav>
       </div>
 
-      {/* Мобильное меню */}
       {menuOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 px-4 py-4 space-y-4">
           <Link href="/catalog" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>
@@ -90,27 +102,18 @@ export default function Header() {
             Мастер‑классы
           </Link>
           <Link href="/cart" className="flex items-center gap-2 text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>
-            Корзина
-            {totalItems > 0 && (
-              <span className="bg-aurora-green text-white w-5 h-5 flex items-center justify-center rounded-full text-xs font-bold">
-                {totalItems}
-              </span>
-            )}
+            Корзина {totalItems > 0 && <span className="bg-aurora-green text-white w-5 h-5 flex items-center justify-center rounded-full text-xs font-bold">{totalItems}</span>}
           </Link>
           <hr className="border-gray-100" />
           {user ? (
             <>
-              <Link href={user.role === 'seller' ? '/dashboard/seller' : '/dashboard/customer'} className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>
-                Кабинет
-              </Link>
-              <button onClick={() => { logout(); setMenuOpen(false); }} className="btn-secondary w-full text-center py-2">
-                Выйти
-              </button>
+              {isAdmin && <Link href="/admin" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>Админ</Link>}
+              {isMaster && <Link href="/dashboard/master" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>Мой магазин</Link>}
+              {isBuyer && <Link href="/dashboard/buyer" className="block text-gray-700 font-medium py-2" onClick={() => setMenuOpen(false)}>Кабинет</Link>}
+              <button onClick={() => { logout(); setMenuOpen(false); }} className="btn-secondary w-full text-center py-2">Выйти</button>
             </>
           ) : (
-            <Link href="/login" className="btn-primary w-full text-center block py-2" onClick={() => setMenuOpen(false)}>
-              Войти
-            </Link>
+            <Link href="/login" className="btn-primary w-full text-center block py-2" onClick={() => setMenuOpen(false)}>Войти</Link>
           )}
         </div>
       )}

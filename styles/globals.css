@@ -5,13 +5,13 @@
 
 html, body {
   @apply font-sans text-gray-900;
-  cursor: default;                       /* ← по умолчанию везде стрелка */
+  cursor: default;                       /* по умолчанию везде стрелка */
   background: linear-gradient(180deg, #F9FAFC 0%, #F2F5F9 100%);
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* Текстовый курсор только там, где реально вводится текст */
+/* Текстовый курсор только в полях ввода */
 input, textarea, [contenteditable="true"] {
   cursor: text;
 }

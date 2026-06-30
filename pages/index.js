@@ -16,12 +16,11 @@ export default function Home() {
 
   return (
     <Layout>
-      {/* Hero блок */}
       <section className="text-center my-16">
-        <h1 className="text-5xl font-extrabold text-soft-rose mb-6 drop-shadow-sm">
+        <h1 className="text-5xl font-heading font-bold text-gray-900 mb-6">
           Добро пожаловать в ЛилиВяжет!
         </h1>
-        <p className="text-xl text-soft-chocolate max-w-2xl mx-auto mb-8">
+        <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
           Уютные игрушки ручной работы, мастер‑классы и вдохновение от талантливых мастеров
         </p>
         <Link href="/catalog" className="btn-primary text-lg px-10 py-4">
@@ -29,16 +28,20 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* Популярное */}
-      <h2 className="text-3xl font-bold text-soft-rose text-center mb-10">
-        ✨ Популярные игрушки
-      </h2>
+      <div className="flex items-center gap-4 mb-10">
+        <div className="h-px flex-1 bg-gray-200" />
+        <h2 className="text-2xl font-heading font-semibold text-gray-800 whitespace-nowrap">
+          Популярные игрушки
+        </h2>
+        <div className="h-px flex-1 bg-gray-200" />
+      </div>
+
       {featured.length === 0 ? (
-        <p className="text-center text-soft-chocolate">
-          Пока нет товаров – станьте первым мастером!
+        <p className="text-center text-gray-500 py-12">
+          Пока нет товаров — станьте первым мастером!
         </p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {featured.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}

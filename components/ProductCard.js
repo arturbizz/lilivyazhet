@@ -1,6 +1,7 @@
 import Link from 'next/link';
-import { useCart } from '../lib/store';
+import { useCart, useAuth } from '../lib/store';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 const YarnPlaceholder = () => (
   <svg className="w-full h-full object-cover rounded-xl" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
@@ -12,12 +13,19 @@ const YarnPlaceholder = () => (
 
 export default function ProductCard({ product }) {
   const addItem = useCart(s => s.addItem);
+  const { user } = useAuth();
+  const router = useRouter();
   const img = product.images?.[0] || '';
 
   const handleAdd = (e) => {
     e.preventDefault();
+    if (!user) {
+      toast.error('Войдите, чтобы добавить в корзину');
+      router.push('/login');
+      return;
+    }
     addItem(product);
-    toast.success('Добавлено в корзину');
+    toast.success('Добавлено в корзину!');
   };
 
   return (
@@ -32,12 +40,8 @@ export default function ProductCard({ product }) {
       <h3 className="font-heading font-semibold text-lg text-gray-900 mb-1">{product.title}</h3>
       <p className="text-aurora-green font-bold text-xl mb-4">{product.price} ₽</p>
       <div className="flex gap-2">
-        <Link href={`/product/?id=${product.id}`} className="btn-secondary text-sm flex-1 text-center py-2">
-          Подробнее
-        </Link>
-        <button onClick={handleAdd} className="btn-primary text-sm flex-1 py-2">
-          В корзину
-        </button>
+        <Link href={`/product/?id=${product.id}`} className="btn-secondary text-sm flex-1 text-center py-2">Подробнее</Link>
+        <button onClick={handleAdd} className="btn-primary text-sm flex-1 py-2">В корзину</button>
       </div>
     </div>
   );

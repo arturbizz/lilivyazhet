@@ -17,7 +17,7 @@ export default function ProductCard({ product }) {
   const handleAdd = (e) => {
     e.preventDefault();
     addItem(product);
-    toast.success('Добавлено!');
+    toast.success('Добавлено в корзину');
   };
 
   return (

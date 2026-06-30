@@ -2,53 +2,43 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../lib/store';
-import toast from 'react-hot-toast';
 
 export default function AuthCallback() {
   const router = useRouter();
   const { setUser, setProfile } = useAuth();
 
   useEffect(() => {
-    supabase.auth.getSession().then(async ({ data: { session }, error }) => {
-      if (error || !session) {
-        toast.error('Ошибка входа, попробуйте снова');
-        router.push('/login');
-        return;
-      }
-      const user = session.user;
-      setUser(user);
-
-      // Проверяем, есть ли профиль, если нет – создаём
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
-      if (!profile) {
-        // Создаём профиль из метаданных
-        const { data: newProfile, error: insertError } = await supabase
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) {
+        setUser(session.user);
+        supabase
           .from('profiles')
-          .insert({
-            id: user.id,
-            full_name: user.user_metadata?.full_name || 'Пользователь',
-            role: user.user_metadata?.role || 'customer',
-          })
-          .select()
-          .single();
-        if (insertError) {
-          toast.error('Ошибка создания профиля');
-          router.push('/login');
-          return;
-        }
-        setProfile(newProfile);
+          .select('*')
+          .eq('id', session.user.id)
+          .single()
+          .then(({ data: profile }) => {
+            setProfile(profile);
+            router.push('/');
+          });
       } else {
-        setProfile(profile);
+        // Если сессии нет – возможно, токен ещё не обработан, пробуем ещё раз через секунду
+        setTimeout(() => {
+          supabase.auth.getSession().then(({ data: { session: s2 } }) => {
+            if (s2?.user) {
+              setUser(s2.user);
+              supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', s2.user.id)
+                .single()
+                .then(({ data: profile }) => {
+                  setProfile(profile);
+                });
+            }
+            router.push('/');
+          });
+        }, 1500);
       }
-
-      toast.success('Добро пожаловать!');
-      const currentProfile = profile || newProfile;
-      router.push(currentProfile?.role === 'admin' ? '/admin' : '/');
     });
   }, []);
 

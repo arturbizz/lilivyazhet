@@ -109,7 +109,16 @@ html, body {
   animation: fade-in 0.8s ease-out both;
 }
 
-/* !!! Убираем курсор (должно быть в самом конце) !!! */
+/* Скрываем скроллбар для горизонтальной ленты */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Убираем мигающий курсор со всех элементов */
 html * {
   cursor: default !important;
 }

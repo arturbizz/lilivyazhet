@@ -9,39 +9,63 @@ export default function MasterDashboard() {
   const [products, setProducts] = useState([]);
   const [masterclasses, setMasterclasses] = useState([]);
   const [orders, setOrders] = useState([]);
+
   const [title, setTitle] = useState('');
   const [price, setPrice] = useState('');
   const [desc, setDesc] = useState('');
   const [category, setCategory] = useState('вязаные');
+
   const [mcTitle, setMcTitle] = useState('');
   const [mcDesc, setMcDesc] = useState('');
   const [mcPrice, setMcPrice] = useState('');
 
   useEffect(() => {
     if (user) {
+      // ✅ ИСПРАВЛЕНО: select('*') вместо пустого select('')
       supabase.from('products').select('*').eq('seller_id', user.id).then(({ data }) => setProducts(data || []));
       supabase.from('masterclasses').select('*').eq('seller_id', user.id).then(({ data }) => setMasterclasses(data || []));
       // Заказы, в которых есть товары этого мастера
-      supabase.from('orders').select('*, order_items!inner(*, products!inner(*))').eq('order_items.products.seller_id', user.id).then(({ data }) => setOrders(data || []));
+      supabase
+        .from('orders')
+        .select('*, order_items!inner(*, products!inner(*))')
+        .eq('order_items.products.seller_id', user.id)
+        .then(({ data }) => setOrders(data || []));
     }
   }, [user]);
 
   const addProduct = async (e) => {
     e.preventDefault();
     const { data, error } = await supabase.from('products').insert({
-      seller_id: user.id, title, price, description: desc, category,
+      seller_id: user.id,
+      title,
+      price: Number(price),
+      description: desc,
+      category,
     }).select();
+
     if (error) toast.error(error.message);
-    else { setProducts([...products, data[0]]); toast.success('Товар добавлен!'); setTitle(''); setPrice(''); setDesc(''); }
+    else {
+      setProducts([...products, data[0]]);
+      toast.success('Товар добавлен!');
+      setTitle(''); setPrice(''); setDesc('');
+    }
   };
 
   const addMasterclass = async (e) => {
     e.preventDefault();
     const { data, error } = await supabase.from('masterclasses').insert({
-      seller_id: user.id, title: mcTitle, description: mcDesc, price: mcPrice,
+      seller_id: user.id,
+      title: mcTitle,
+      description: mcDesc,
+      price: Number(mcPrice) || 0,
     }).select();
+
     if (error) toast.error(error.message);
-    else { setMasterclasses([...masterclasses, data[0]]); toast.success('Мастер‑класс добавлен!'); setMcTitle(''); setMcDesc(''); setMcPrice(''); }
+    else {
+      setMasterclasses([...masterclasses, data[0]]);
+      toast.success('Мастер‑класс добавлен!');
+      setMcTitle(''); setMcDesc(''); setMcPrice('');
+    }
   };
 
   const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
@@ -94,7 +118,6 @@ export default function MasterDashboard() {
         </div>
       </div>
 
-      {/* Списки товаров и мастер‑классов */}
       <h2 className="text-2xl font-heading font-semibold mb-4">🛍 Мои товары</h2>
       {products.length === 0 ? <p className="text-gray-500">Нет товаров</p> : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">

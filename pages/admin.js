@@ -30,26 +30,35 @@ export default function AdminPanel() {
   const loadData = async () => {
     setLoading(true);
     switch (tab) {
-      case 'users':
+      case 'users': {
+        // ✅ ИСПРАВЛЕНО
         const { data: usersData } = await supabase.from('profiles').select('*');
         setUsers(usersData || []);
         break;
-      case 'orders':
+      }
+      case 'orders': {
+        // ✅ ИСПРАВЛЕНО
         const { data: ordersData } = await supabase.from('orders').select('*, order_items(*, products(*))');
         setOrders(ordersData || []);
         break;
-      case 'products':
+      }
+      case 'products': {
+        // ✅ ИСПРАВЛЕНО
         const { data: productsData } = await supabase.from('products').select('*, profiles(full_name)');
         setProducts(productsData || []);
         break;
-      case 'masterclasses':
+      }
+      case 'masterclasses': {
+        // ✅ ИСПРАВЛЕНО
         const { data: mcs } = await supabase.from('masterclasses').select('*, profiles(full_name)');
         setMasterclasses(mcs || []);
         break;
-      case 'applications':
+      }
+      case 'applications': {
         const { data: apps } = await supabase.from('master_applications').select('*, profiles(full_name, email)');
         setApplications(apps || []);
         break;
+      }
     }
     setLoading(false);
   };
@@ -70,6 +79,7 @@ export default function AdminPanel() {
     <Layout>
       <div className="max-w-7xl mx-auto py-10 px-4">
         <h1 className="text-4xl font-heading font-bold text-gray-900 mb-8">Панель администратора</h1>
+
         <div className="flex flex-wrap gap-3 mb-10">
           {[
             { key: 'users', label: '👥 Пользователи' },
@@ -94,7 +104,6 @@ export default function AdminPanel() {
                 </table>
               </div>
             )}
-
             {tab === 'applications' && (
               <div className="space-y-4">
                 {applications.length === 0 ? <p>Нет заявок</p> : applications.map(app => (
@@ -115,19 +124,17 @@ export default function AdminPanel() {
                 ))}
               </div>
             )}
-
             {tab === 'orders' && (
               <div className="space-y-4">
                 {orders.map(order => (
                   <div key={order.id} className="card">
-                    <div className="flex justify-between items-center mb-2"><span className="font-semibold">Заказ #{order.id.slice(0,8)}</span><span className="text-sm text-gray-400">{order.status}</span></div>
-                    <ul className="text-sm">{order.order_items.map(item => (<li key={item.id}>{item.products?.title || 'Товар'} × {item.quantity} — {item.price} ₽</li>))}</ul>
+                    <div className="flex justify-between items-center mb-2"><span className="font-semibold">Заказ #{order.id.slice(0, 8)}</span><span className="text-sm text-gray-400">{order.status}</span></div>
+                    <ul className="text-sm">{(order.order_items || []).map(item => (<li key={item.id}>{item.products?.title || 'Товар'} × {item.quantity} — {item.price} ₽</li>))}</ul>
                     <p className="font-bold mt-2">Итого: {order.total} ₽</p>
                   </div>
                 ))}
               </div>
             )}
-
             {tab === 'products' && (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {products.map(p => (
@@ -140,7 +147,6 @@ export default function AdminPanel() {
                 ))}
               </div>
             )}
-
             {tab === 'masterclasses' && (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {masterclasses.map(mc => (

@@ -8,40 +8,31 @@ export default function App({ Component, pageProps }) {
   const { setUser, setProfile } = useAuth();
 
   useEffect(() => {
-    // Проверяем, вдруг мы уже вошли (например, после клика по ссылке из письма)
+    const loadProfile = async (user) => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', user.id)
+        .maybeSingle();
+      if (data) setProfile(data);
+    };
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         setUser(session.user);
-        supabase
-          .from('profiles')
-          .select('*')
-          .eq('id', session.user.id)
-          .single()
-          .then(({ data: profile }) => {
-            setProfile(profile);
-          });
+        loadProfile(session.user);
       }
     });
 
-    // Слушаем изменения авторизации (на будущее)
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session?.user) {
-          setUser(session.user);
-          supabase
-            .from('profiles')
-            .select('*')
-            .eq('id', session.user.id)
-            .single()
-            .then(({ data: profile }) => {
-              setProfile(profile);
-            });
-        } else {
-          setUser(null);
-          setProfile(null);
-        }
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session?.user) {
+        setUser(session.user);
+        loadProfile(session.user);
+      } else {
+        setUser(null);
+        setProfile(null);
       }
-    );
+    });
 
     return () => {
       authListener?.subscription.unsubscribe();

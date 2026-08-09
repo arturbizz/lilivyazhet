@@ -11,6 +11,7 @@ export default function AuthCallback() {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
         setUser(session.user);
+        // ✅ ИСПРАВЛЕНО: select('*')
         supabase
           .from('profiles')
           .select('*')
@@ -21,7 +22,6 @@ export default function AuthCallback() {
             router.push('/');
           });
       } else {
-        // Если сессии нет – возможно, токен ещё не обработан, пробуем ещё раз через секунду
         setTimeout(() => {
           supabase.auth.getSession().then(({ data: { session: s2 } }) => {
             if (s2?.user) {

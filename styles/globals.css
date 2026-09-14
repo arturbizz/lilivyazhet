@@ -1,0 +1,251 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Цвета сияния. По умолчанию — фирменные; на странице мастерицы
+   подменяются её темой (см. lib/themes.js). */
+:root {
+  --a1: #00E5A0;
+  --a2: #00C2FF;
+  --a3: #7B61FF;
+}
+
+@layer base {
+  html, body {
+    @apply font-sans text-gray-900;
+    background: linear-gradient(180deg, #F9FAFC 0%, #F2F5F9 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@layer components {
+  /* Основная кнопка с сиянием */
+  .btn-primary {
+    @apply relative inline-flex items-center justify-center gap-2 px-6 py-3
+           bg-white text-gray-800 font-medium rounded-full
+           border border-gray-200
+           transition-all duration-300 ease-out
+           select-none;
+    box-shadow: 0 0 8px rgba(0, 229, 160, 0.15);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--a1) 15%, transparent);
+    background-clip: padding-box;
+  }
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 9999px;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--a1), var(--a2), var(--a3), var(--a1));
+    background-size: 300% 300%;
+    animation: aurora-rotate 6s ease infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  .btn-primary:hover {
+    @apply border-gray-300;
+    box-shadow: 0 0 20px rgba(0, 229, 160, 0.35);
+    box-shadow: 0 0 20px color-mix(in srgb, var(--a1) 35%, transparent);
+  }
+  .btn-primary:hover::before { opacity: 1; }
+  .btn-primary:active { @apply bg-gray-50; }
+  .btn-primary:disabled, .btn-secondary:disabled, .btn-danger:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* Вторичная кнопка */
+  .btn-secondary {
+    @apply relative inline-flex items-center justify-center gap-2 px-6 py-3
+           bg-white text-gray-600 font-medium rounded-full
+           border border-gray-200
+           transition-all duration-300 ease-out
+           select-none;
+  }
+  .btn-secondary:hover {
+    @apply border-gray-300 text-gray-800;
+    box-shadow: 0 0 12px rgba(0, 194, 255, 0.15);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--a2) 15%, transparent);
+  }
+
+  /* Кнопка-иконка и «опасная» кнопка */
+  .btn-icon {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-full flex-shrink-0
+           bg-white border border-gray-200 text-gray-500
+           transition-all duration-200 hover:text-gray-900 hover:border-gray-300;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full text-sm font-medium
+           text-red-500 bg-white border border-red-100 transition-all hover:bg-red-50 hover:border-red-200;
+  }
+
+  /* Карточка товара */
+  .card {
+    @apply bg-white rounded-2xl shadow-sm hover:shadow-md
+           transition-all duration-300 p-5
+           border border-gray-100;
+    position: relative;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: 18px;
+    padding: 1px;
+    background: linear-gradient(135deg, var(--a1), var(--a2), var(--a3));
+    background-size: 200% 200%;
+    animation: aurora-rotate 6s ease infinite;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .card:hover::after { opacity: 1; }
+
+  /* Спокойная панель — для форм и кабинета */
+  .panel {
+    @apply bg-white rounded-3xl border border-gray-100 shadow-sm p-5 sm:p-7;
+  }
+
+  /* Тонкие акцентные линии */
+  .accent-line {
+    @apply h-px flex-1;
+    background: linear-gradient(90deg, transparent, var(--a2), var(--a3), var(--a1), transparent);
+    opacity: 0.3;
+  }
+
+  /* Градиентный текст в цветах сияния */
+  .aurora-text {
+    background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .aurora-bar {
+    background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3));
+  }
+
+  /* Сияющее кольцо вокруг аватара мастерицы */
+  .aurora-ring {
+    @apply rounded-full p-[3px] flex-shrink-0;
+    background: linear-gradient(135deg, var(--a1), var(--a2), var(--a3), var(--a1));
+    background-size: 300% 300%;
+    animation: aurora-rotate 6s ease infinite;
+  }
+  .aurora-ring > * {
+    @apply rounded-full bg-white border-[3px] border-white overflow-hidden w-full h-full;
+  }
+
+  /* Кружок-иконка с насыщенным сиянием (на нём белая иконка читается) */
+  .aurora-chip {
+    @apply flex items-center justify-center text-white;
+    background: linear-gradient(135deg, var(--a1), var(--a2), var(--a3));
+    background-size: 200% 200%;
+    animation: aurora-rotate 8s ease infinite;
+  }
+
+  /* Мягкий фон-сияние (обложки по умолчанию, пустые состояния) */
+  .aurora-soft {
+    background-color: #F8FAFC;
+    background-image:
+      radial-gradient(60% 80% at 15% 20%, color-mix(in srgb, var(--a1) 28%, transparent) 0%, transparent 70%),
+      radial-gradient(50% 70% at 85% 30%, color-mix(in srgb, var(--a3) 24%, transparent) 0%, transparent 70%),
+      radial-gradient(60% 80% at 50% 100%, color-mix(in srgb, var(--a2) 22%, transparent) 0%, transparent 70%);
+  }
+
+  /* Поля ввода — как на странице входа */
+  .input {
+    @apply w-full px-4 py-3 rounded-full border border-gray-200 bg-white text-gray-900
+           placeholder:text-gray-400 transition-colors
+           focus:outline-none focus:border-aurora-green;
+  }
+  .textarea {
+    @apply w-full px-4 py-3 rounded-2xl border border-gray-200 bg-white text-gray-900
+           placeholder:text-gray-400 transition-colors resize-y
+           focus:outline-none focus:border-aurora-green;
+  }
+  .label { @apply block text-sm font-medium text-gray-700 mb-1.5 ml-1; }
+  .hint { @apply text-xs text-gray-400 mt-1.5 ml-1 leading-relaxed; }
+
+  /* Фильтры-пилюли (как в каталоге) */
+  .pill {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium
+           transition-all duration-200 border whitespace-nowrap
+           border-gray-200 text-gray-500 bg-white hover:border-gray-300 hover:text-gray-700;
+  }
+  .pill-active {
+    @apply border-aurora-green bg-aurora-green/5 text-aurora-green shadow-sm hover:border-aurora-green hover:text-aurora-green;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap;
+  }
+
+  /* Скелетон загрузки */
+  .skeleton {
+    @apply rounded-xl bg-gray-100 relative overflow-hidden;
+  }
+  .skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+    animation: shimmer 1.4s infinite;
+  }
+
+
+  /* Анимации появления */
+
+  .animate-fade-in { animation: fade-in 0.8s ease-out both; }
+
+  .animate-pop-in { animation: pop-in 0.25s ease-out both; }
+
+  /* Скрываем скроллбар для горизонтальной ленты */
+  .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+  .scrollbar-hide::-webkit-scrollbar { display: none; }
+
+  .line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+}
+
+@keyframes aurora-rotate {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer { 100% { transform: translateX(100%); } }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Убираем мигающий курсор со всех элементов */
+html * { cursor: default !important; }
+input, textarea, [contenteditable="true"] { cursor: text !important; }
+a, a *, button, button *, [role="button"], select, .clickable, label, summary,
+input[type="checkbox"], input[type="radio"], input[type="file"] {
+  cursor: pointer !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary::before, .card::after, .aurora-ring, .aurora-chip, .skeleton::after { animation: none; }
+}

@@ -1,0 +1,30 @@
+name: Сборка и публикация сайта на GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:      # кнопка «запустить вручную» на вкладке Actions
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY }}
+
+      # Без этого файла GitHub Pages прячет папку _next (она начинается с «_»),
+      # и сайт открывается голым текстом без оформления.
+      - run: touch out/.nojekyll
+
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GH_PAT }}
+          publish_dir: ./out

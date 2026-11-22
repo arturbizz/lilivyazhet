@@ -3,7 +3,7 @@ import { ArrowDown, ArrowLeft, ArrowRight, Check, ChevronDown, Heart, Menu, Minu
 import DemoWorkspace from './components/DemoWorkspace';
 import { Category, CustomFilter, Product, SiteContent, defaultCategories, demoProducts, formatPrice, heroImage } from './marketplace';
 
-const logo = '/manus-storage/lili-logo_7aa86770.jpg';
+const logo = '/assets/lili-logo.jpg';
 type Sort = 'featured' | 'low' | 'high';
 
 function useStored<T>(key: string, initial: T): [T, React.Dispatch<React.SetStateAction<T>>] {

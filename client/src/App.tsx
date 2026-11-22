@@ -46,6 +46,18 @@ function App() {
     return () => document.removeEventListener('mousedown', close);
   }, []);
   useEffect(() => {
+    setProducts(current => {
+      let changed = false;
+      const migrated = current.map(product => {
+        const demo = demoProducts.find(item => item.id === product.id);
+        if (!demo || (!product.image.includes('/manus-storage/') && !product.image.startsWith('/assets/'))) return product;
+        changed = true;
+        return { ...product, image: demo.image };
+      });
+      return changed ? migrated : current;
+    });
+  }, []);
+  useEffect(() => {
     const warn = () => setStorageIssue(true);
     window.addEventListener('lili-storage-error', warn);
     return () => window.removeEventListener('lili-storage-error', warn);

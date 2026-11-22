@@ -15,3 +15,25 @@
   .hero-buttons { gap: 14px; }
   .hero-buttons .button { gap: 12px; padding-inline: 14px; }
 }
+
+
+/* Accent refresh: warm coral actions with a soft lilac glow */
+:root{--accent-coral:#c97869;--accent-coral-dark:#aa5b53;--accent-lilac:#8b6a93;--accent-lilac-dark:#705278;--accent-peach:#fff1eb;--accent-lilac-soft:#f4edf6}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline-color:var(--accent-coral)}
+.topline{background:#806986}
+.brand-copy small{color:#bd846f}
+.hero{background:linear-gradient(135deg,#f1e7e3 0%,#eee7ef 100%)}
+.hero h1 em,.section-heading h2 em,.maker-text h2 em,.drawer-header em{color:var(--accent-lilac)}
+.button.primary{background:var(--accent-coral);box-shadow:0 8px 20px #c9786933}
+.button.primary:hover{background:var(--accent-coral-dark);box-shadow:0 10px 25px #c9786952}
+.button.outline:hover{background:var(--accent-peach);border-color:#d9a096;color:var(--accent-coral-dark)}
+.hero-link:hover,.maker-links a:hover{color:var(--accent-coral-dark)}
+.header-actions i{background:var(--accent-coral)}
+.category-scroll button.active{background:var(--accent-lilac);border-color:var(--accent-lilac);box-shadow:0 6px 16px #8b6a9338}
+.category-scroll button:hover:not(.active){background:var(--accent-lilac-soft);border-color:#c8b4cf;color:var(--accent-lilac-dark)}
+.product-bottom button:hover{background:var(--accent-coral);border-color:var(--accent-coral);box-shadow:0 5px 14px #c9786945}
+.favorite.is-favorite{color:var(--accent-coral)}
+.mobile-filter-button:hover{background:var(--accent-peach);border-color:#d9a096;color:var(--accent-coral-dark)}
+.maker-banner{background:linear-gradient(110deg,#f1e8e4,#eee7ef)}
+.footer{background:#f3eceb}
+.toast{background:#624b65;box-shadow:0 8px 25px #624b6540}

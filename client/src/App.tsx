@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, ArrowLeft, ArrowRight, Check, ChevronDown, Heart, Menu, Minus, Plus, Search, ShoppingBag, SlidersHorizontal, Sparkles, UserRound, X } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, Check, ChevronDown, Heart, MapPin, Menu, Minus, Play, Plus, Search, ShoppingBag, SlidersHorizontal, Sparkles, UserRound, X } from 'lucide-react';
 import DemoWorkspace from './components/DemoWorkspace';
 import { Category, CustomFilter, Product, SiteContent, defaultCategories, demoProducts, formatPrice, heroImage } from './marketplace';
 
@@ -13,6 +13,23 @@ function useStored<T>(key: string, initial: T): [T, React.Dispatch<React.SetStat
   });
   useEffect(() => { try { localStorage.setItem(key, JSON.stringify(value)); } catch { window.dispatchEvent(new Event('lili-storage-error')); } }, [key, value]);
   return [value, setValue];
+}
+
+function FeedCard({ product, inBasket, isFavorite, onAdd, onFavorite, onOpen }: { product: Product; inBasket: boolean; isFavorite: boolean; onAdd: () => void; onFavorite: () => void; onOpen: () => void }) {
+  const actionLabel = product.madeToOrder ? 'Заказать' : 'Купить';
+  return <article className="feed-card">
+    <div className="feed-media">
+      {product.videoUrl ? <video src={product.videoUrl} poster={product.image} muted loop playsInline controls preload="metadata" aria-label={`Видео-презентация: ${product.title}`} /> : <img src={product.image} alt={product.title} loading="lazy" />}
+      <div className="feed-media-top"><span className="feed-status">{product.videoUrl ? <><Play size={12} fill="currentColor"/> SHORT</> : 'ФОТО · РАБОТА'}</span>{product.premium && <span className="feed-premium">PREMIUM</span>}</div>
+      <button className={`feed-favorite ${isFavorite ? 'is-favorite' : ''}`} onClick={onFavorite} aria-label={isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'}><Heart size={20} fill={isFavorite ? 'currentColor' : 'none'}/></button>
+    </div>
+    <div className="feed-copy">
+      <div className="feed-meta"><span>{product.seller}</span><span><MapPin size={13}/> {product.city}</span></div>
+      <button className="feed-title" onClick={onOpen}>{product.title}</button>
+      <p className="feed-caption">{product.description}</p>
+      <div className="feed-purchase"><div><strong>{formatPrice(product.price)}</strong><small>{product.madeToOrder ? 'изготовление под заказ' : 'можно забрать сейчас'}</small></div><button className={`feed-cta ${inBasket ? 'is-added' : ''}`} onClick={onAdd}>{inBasket ? <><Check size={17}/> В корзине</> : <>{actionLabel} <ArrowRight size={17}/></>}</button></div>
+    </div>
+  </article>;
 }
 
 function App() {
@@ -38,6 +55,7 @@ function App() {
   const [notice, setNotice] = useState('');
   const [storageIssue, setStorageIssue] = useState(false);
   const catalogRef = useRef<HTMLElement>(null);
+  const feedRef = useRef<HTMLElement>(null);
   const searchRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -111,12 +129,15 @@ function App() {
 
     {workspaceOpen ? <DemoWorkspace products={products} categories={categories} customFilters={customFilters} content={content} onUpdateContent={changes => setContent(current => ({...current,...changes}))} onAddFilter={name => setCustomFilters(current => [...current, {id:`filter-${Date.now()}`,name}])} onUpdateFilter={(id,name) => setCustomFilters(current => current.map(f => f.id === id ? {...f,name} : f))} onDeleteFilter={id => {setCustomFilters(current => current.filter(f => f.id !== id)); setProducts(current => current.map(p => ({...p,filterIds:p.filterIds?.filter(f => f !== id)}))); if (customFilter === id) setCustomFilter('');}} onAddProduct={p => setProducts(current => [p, ...current])} onUpdateProduct={updateProduct} onAddCategory={name => setCategories(current => [...current, {id:`cat-${Date.now()}`, name}])} onUpdateCategory={(id, name) => setCategories(current => current.map(c => c.id === id ? {...c,name} : c))} onDeleteCategory={id => {setCategories(current => current.filter(c => c.id !== id)); if (category === id) setCategory('all');}} onClose={() => setWorkspaceOpen(false)} /> : <>
       <main>
-        <section className="hero wrap">
-          <div className="hero-copy"><div className="eyebrow"><span className="eyebrow-line"/> МАРКЕТПЛЕЙС ДУШЕВНЫХ ВЕЩЕЙ</div><h1>{content.headline}<br/><em>{content.subheading}</em></h1><p>{content.description}</p><div className="hero-buttons"><button className="button primary" onClick={goCatalog}>Найти свою радость <ArrowRight size={17}/></button><button className="hero-link" onClick={() => setWorkspaceOpen(true)}>Я мастер <ArrowRight size={15}/></button></div><div className="hero-note"><span className="tiny-heart">♡</span><span>Каждая вещь создана<br/><b>с заботой и теплом</b></span></div></div>
-          <div className="hero-visual"><img src={heroImage} alt="Вязаная игрушка в уютной мастерской — демонстрационное изображение"/><div className="image-label"><span className="label-star">✳</span><span>создано<br/><b>с любовью</b></span></div><div className="image-index">СОЗДАНО С ЛЮБОВЬЮ</div></div>
-          <div className="hero-side-note">ОТ СЕРДЦА К СЕРДЦУ <span>✳</span> РУЧНАЯ РАБОТА</div>
+        <section className="feed-intro wrap" ref={feedRef}>
+          <div className="feed-intro-copy"><div className="eyebrow"><span className="eyebrow-line"/> ЛЕНТА РАБОТ МАСТЕРОВ</div><h1>Вещи, которые<br/><em>хочется обнять</em></h1><p>Листайте короткие истории мастеров, выбирайте готовые игрушки или заказывайте свою.</p><div className="feed-intro-actions"><button className="button primary" onClick={() => feedRef.current?.scrollIntoView({behavior:'smooth'})}>Смотреть ленту <ArrowDown size={17}/></button><button className="hero-link" onClick={() => setWorkspaceOpen(true)}>Я мастер <ArrowRight size={15}/></button></div></div>
+          <div className="feed-intro-card"><img src={heroImage} alt="Уютная мастерская — демонстрационное изображение"/><div><span>СЕЙЧАС В ЛЕНТЕ</span><strong>{published.length} работы от мастеров</strong></div></div>
         </section>
-        <div className="values-bar wrap"><div><span className="value-icon">♡</span><span><b>Сделано вручную</b><small>У каждой вещи свой характер</small></span></div><div><span className="value-icon">✳</span><span><b>С теплом и заботой</b><small>Создано мастерами для вас</small></span></div><div><span className="value-icon">⌁</span><span><b>Особенный подарок</b><small>Повод порадовать близких</small></span></div><button onClick={goCatalog}>СМОТРЕТЬ КАТАЛОГ <ArrowDown size={15}/></button></div>
+        <section className="feed-section wrap" aria-labelledby="feed-heading">
+          <div className="feed-section-heading"><div><div className="eyebrow"><span className="eyebrow-line"/> ЖИВЫЕ ИСТОРИИ</div><h2 id="feed-heading">Смотрите. Выбирайте. <em>Любите.</em></h2></div><button className="feed-catalog-link" onClick={goCatalog}>Все фильтры <ArrowRight size={15}/></button></div>
+          <div className="feed-list">{published.map(product => <FeedCard key={product.id} product={product} inBasket={basket.includes(product.id)} isFavorite={favorites.includes(product.id)} onAdd={() => addBasket(product.id)} onFavorite={() => toggleFavorite(product.id)} onOpen={() => setSelectedProduct(product)} />)}</div>
+          <p className="feed-demo-note">Лента демонстрационная: публикации, имена мастерских и цены приведены для примера.</p>
+        </section>
         <section className="catalog-section wrap" id="catalog" ref={catalogRef}>
           <div className="section-heading"><div><div className="eyebrow"><span className="eyebrow-line"/> ВЫБИРАЙТЕ С СЕРДЦЕМ</div><h2>Найдите свою <em>особенную вещь</em></h2><p>Маленькие сокровища, связанные с большой любовью.</p></div><div className="catalog-counter"><span>КОЛЛЕКЦИЯ</span><b>РУЧНАЯ РАБОТА</b></div></div>
           <div className="category-scroll" aria-label="Категории каталога"><button className={category==='all'?'active':''} onClick={() => {setCategory('all'); setFavoritesOnly(false);}}>Все работы <span>↗</span></button>{categories.map(c => <button key={c.id} className={category===c.id?'active':''} onClick={() => {setCategory(c.id); setFavoritesOnly(false);}}>{c.name}</button>)}</div>

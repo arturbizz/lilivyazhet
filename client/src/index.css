@@ -66,3 +66,31 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{ou
 .footer-inner button:hover,.footer-inner a:hover{color:var(--accent-coral-dark);transform:translateX(2px)}
 
 @media(prefers-reduced-motion:reduce){.button,.desktop-nav button,.header-actions>button,.category-scroll button,.mobile-filter-button,.product-bottom button,.favorite,.values-bar>button,.hero-link,.maker-links a,.footer-inner button,.footer-inner a,.mobile-nav button,.product-card,.header-search,.desktop-nav button::after{transition:none!important}.button:active,.mobile-filter-button:active,.category-scroll button:active,.product-bottom button:active,.favorite:active,.header-actions>button:active,.product-card:hover{transform:none!important}}
+
+
+/* Mobile menu and dropdown reveal animations */
+@keyframes mobile-nav-in{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes mobile-nav-item-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes dropdown-in{from{opacity:0;transform:translateY(-7px) scaleY(.97)}to{opacity:1;transform:translateY(0) scaleY(1)}}
+@keyframes filter-panel-in{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.suggestions{transform-origin:top center;animation:dropdown-in .24s cubic-bezier(.22,.75,.25,1) both}
+.sort-select{transition:color .22s ease}
+.sort-select:focus-within{color:var(--accent-lilac-dark)}
+.sort-select select{transition:color .22s ease,background-color .22s ease}
+.sort-select select:focus{color:var(--accent-coral-dark);background:var(--accent-peach);border-radius:3px}
+
+@media(max-width:640px){
+  .mobile-nav{animation:mobile-nav-in .55s cubic-bezier(.22,.75,.25,1) both}
+  .mobile-nav button{animation:mobile-nav-item-in .42s cubic-bezier(.22,.75,.25,1) both}
+  .mobile-nav button:nth-child(1){animation-delay:.08s}
+  .mobile-nav button:nth-child(2){animation-delay:.13s}
+  .mobile-nav button:nth-child(3){animation-delay:.18s}
+  .mobile-nav button:nth-child(4){animation-delay:.23s}
+  .mobile-nav button:nth-child(5){animation-delay:.28s}
+  .filters{display:block;visibility:hidden;pointer-events:none;max-height:0;opacity:0;overflow:hidden;transform:translateY(-10px);padding:0 18px;margin-bottom:0;border-color:transparent;transition:max-height .4s ease,opacity .25s ease,transform .4s ease,padding .4s ease,margin-bottom .4s ease,border-color .3s ease}
+  .filters.filters-open{visibility:visible;pointer-events:auto;max-height:760px;opacity:1;transform:translateY(0);padding:18px;margin-bottom:22px;border-color:#e9e4e3;animation:filter-panel-in .38s cubic-bezier(.22,.75,.25,1) both}
+  .mobile-filter-button svg{transition:transform .28s ease}
+  .filters.filters-open~.catalog-content .mobile-filter-button svg{transform:rotate(180deg)}
+}
+
+@media(prefers-reduced-motion:reduce){.suggestions,.mobile-nav,.mobile-nav button,.filters.filters-open{animation:none!important}.sort-select,.sort-select select,.mobile-filter-button svg,.filters{transition:none!important}.filters{transform:none!important}}
